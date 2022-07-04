@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        // Where to put up the compiled js files
+        "outDir": "build",
+        // this enables compiler will compile auotmatically whenever code changes
+        "watch": true 
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "files": [
+        "src/index.ts"
+    ]
+}

@@ -1,0 +1,276 @@
+Lab Setup:
+
+1.node js
+2.vs code
+.....................................................................................
+				Angular 
+
+PRE Skills:
+
+1.HTML 5
+2.CSS 3
+3.Javascript -ES 5/ ES 6
+
+Learning Path:
+
+1.TypeScript
+2.RXJS
+3.Angular
+....................................................................................
+				Typescript
+...................................................................................
+
+What is Typescript?
+ Typescript is object oriented and functional style programming language.
+ Typescript that scales javascript.
+ scaling is nothing but expanding features.
+ Typescript is super set of Javascript.
+ Typescript is programming language to write javascript apps.
+
+Why Typescript?
+  There are  problems in javascript.
+
+
+What is Javascript?
+   Javascript is object based,functional style,dynamic typed programming language
+
+Styles of programming language
+ -Object oriented
+ -Procedure oriented
+ -Functional oriented
+ -Event driven
+etc...
+
+Some languages designed with single style - c++,java,C#,c
+Some languages designed with multiple styles (hybrid) - Javascript,java 8,C#,Scala,Groovy,Kotiln....
+
+"Javascript is Object based,functional Style,Event driven programming language."
+
+
+Object oriented and Object based:
+.................................
+
+Object Oriented Principles:
+...........................
+
+1.Abstraction
+2.Encapsulation
+3.Hierarchy
+4.Typing
+5.Modularity
+----------------------
+6.Concurrency
+7.Persistency
+
+if any language follows the first 5 prinicples 100% , those languages are called object oriented programming.
+
+java script does not follow the first 5 principles , so it is called as object based languge.
+
+
+What is typescript?
+
+ Typescript is object oriented and functional style programming language.
+ Typescript that scales javascript.
+ scaling is nothing but expanding features.
+ Typescript is super set of Javascript.
+ Typescript is programming language to write javascript apps.
+
+
+Why Typescript?
+
+
+What is Javascript?
+
+ -Javascript is programming language.
+
+Styles of programming language
+ -Object oriented
+ -Procedure oriented
+ -Functional oriented
+ -Event driven
+
+Some languages designed with single style - c++,java,C#,c
+Some languages designed with multiple styles (hybrid) - Javascript,java 8,C#,Scala,Groovy,Kotiln....
+
+"Javascript is Object based,functional Style,Event driven programming language."
+
+Object oriented and Object based:
+.................................
+
+Object Oriented Principles:
+...........................
+
+1.Abstraction
+2.Encapsulation
+3.Hierarchy
+4.Typing
+5.Modularity
+----------------------
+6.Concurrency
+7.Persistency
+
+if any language follows the first 5 prinicples 100% , those languages are called object oriented programming.
+
+java script does not follow the first 5 principles , so it is called as object based languge.
+
+
+functional pure vs style:
+
+-if any language follows 100% functional programming principles those languages are called
+"purely functional",if not functional style.
+
+
+    Typescript was created for building "Object oriented Javascript apps".
+
+.....................................................................................
+					Typing
+				     (Data Types)
+.....................................................................................
+
+
+classification of data types:
+
+1.Strongly typed /Static Typed
+
+ The type of variable is verified during compile time.
+ int a =100;
+ a=true;
+  This is compile time error.
+
+ eg:
+  c,C++,Java,C#....
+
+2.Weakly typed/ Dynamic Typed
+
+ Dynamic typed language / weak typed language -----Javascript
+        The type of variable is not verified during compile time, runtime verfication.
+
+ variable=value
+ var i=10;
+ i=true
+ i="hello"
+......................
+
+js   =>  dynamic typed + object based
+java =>strong typed + object oriented
+
+js cant be used where you need strong typing and pure object oriented features
+
+After 2009, Many javascript developers started thinking about how to introduce strong typing and object oriented features into the js language.
+
+Projects started to build object oriented javascript language.
+
+
+1.coffee script
+  -First project who introduced classes,interfaces,encaspulation....
+
+Employee.coffee
+
+class Employee {
+
+}
+
+Note: you cant run coffee script program on to the browser..., we need to convert /compile/transpile(source code to source code conversion).
+
+coffee script language introduced a compiler called "coffee script compiler"
+
+coffee Employee.coffee =>  Employee.js=>you can run on browser
+
+coffee had missed "the concept of strong typing"
+....................................................................................
+				Birth of Typescript
+...................................................................................
+
+
+2010, Microsoft started project to create "object oriented javascript" using C#
+
+Employee.cs
+
+class Employee {}
+
+csc Employee.cs => Employee.js
+
+Objective of MS Project:
+
+ -Add Type System - Strong Typing
+ -Classes
+ -Modules
+ -interfaces
+ -encapulation keywords
+etc...
+
+MS Failed to port this project to public because
+
+Problems with C#
+ 1.PORTABLITY
+ 2.COMPLEXITY
+.....................................................................................
+			     ECMA Committe and Javascript features
+
+
+ecma team had looked many third projects such as coffee,ms projects, ecma team decided to create language features to adopt object oriented system- Birth of ECMA 6.
+
+ECMA introduced new features
+
+1.classes
+2.new keywords for variables-let,const
+3.new objects
+etc....
+
+
+2012 - ECMA released new javascript spec (ES 6) in which They introduced
+  
+   - classes
+   - let 
+   - const
+   - advanced object literals
+   - Promises
+  etc..........
+
+MS decided to rewrite Typed Javascript project based "ECMA 6 Standards".
+
+MS Started redesigning the whole project, target ecma 6 as base language.
+
+{ES 6 + Static Typing + added new extra fetures} => The brith of Typescript.
+
+
+Arch of TS:
+
+					
+				      TS language
+					    |
+					  ES 6
+					    |
+					  ES 5
+
+
+Typescript----compile----Plain javascript
+
+Typescript is strongly typed, object oriented  javascript.
+
+Now you can use type script to build better object oriented systems using javascript.
+
+TS is not compititor or replacer for javascript but it complements js.
+....................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
