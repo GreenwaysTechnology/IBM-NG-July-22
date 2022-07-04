@@ -3,7 +3,11 @@
         // Where to put up the compiled js files
         "outDir": "build",
         // this enables compiler will compile auotmatically whenever code changes
-        "watch": true 
+        "watch": true,
+        "target" :"ES6",
+        "noImplicitAny": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "exclude": [
         "node_modules"

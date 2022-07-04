@@ -252,6 +252,1373 @@ Now you can use type script to build better object oriented systems using javasc
 
 TS is not compititor or replacer for javascript but it complements js.
 ....................................................................................
+				Setup Ts project
+
+Lab:
+
+Create Ts Project.
+How to write ts programs
+How to compile ts programs
+How to run compiled ts programs
+
+How to save file Name?
+
+fileName.ts
+ index.ts
+
+E:\session\upgrad> mkdir ts-apps
+
+2.go to ts-apps folder
+
+
+E:\session\upgrad>cd ts-apps
+
+E:\session\upgrad\ts-apps>
+
+3.create package.json file
+
+
+E:\session\upgrad\ts-apps> npm init -y
+
+4.create src folder 
+
+E:\session\upgrad\ts-apps>  mkdir src 
+
+5.install typescript compiler
+
+ npm install typescript --save-dev
+
+6.lanuch ide 
+E:\session\upgrad\ts-apps>  code .
+
+7.open package.json file and look inside scripts section and add this entry
+ "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile" : "tsc"
+  }
+
+9.tsconfig.json file  : used to configure compiler parameters
+{
+    "compilerOptions": {
+        "outDir": "build",
+        "watch": true,
+        "target": "ES6",
+        "noEmitOnError": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "files": [
+        "src/index.ts"
+    ]
+}
+
+
+10.test inside browser
+
+Create html file inside project dir
+
+ts-apps
+
+ -index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typescript-App</title>
+</head>
+<body>
+    <h1>Typescript app</h1>
+    <script src="src/index.ts"></script>
+</body>
+</html>
+
+Here we need to test whether it is working or not
+
+in order to test this , you need to install live server. which is embeded webserver for vs code.
+
+11.compile ts code 
+
+open cmd prompt and go to the project location
+
+E:\session\IBM\2022\may\ng-session\ts-apps> npm run compile
+
+12.After compilation, you can see the folder in side project dir and file called index.js
+
+13. include that index.js inside index.html
+<body>
+    <h1>Typescript app</h1>
+    <script src="build/index.js"></script>
+</body>
+
+JS has no compile time data types,thats where TS was created in order to add compile time data types.
+
+if any vilation happens during compile time , compiler picks ups the errors and show those errors during dev cycle.
+
+1.Dynamic types
+   Runtime Types
+2.Static types
+   Compile Time Types
+
+Javascript is Dynamic typed language,Types are identified during runtime only.
+
+Types are identified based on "literals" in javascript.
+
+Literals:
+
+1.number
+2.string
+3.boolean
+4.undefined
+5.NaN
+6.infinity
+7.null
+8.function
+9.object
+
+How to know the type of(runtime type of variable) ?
+
+"type of" operator
+
+Js types:
+1.number
+   number,NaN,infinity
+2.string
+3.undefined
+4.function
+5.object
+   object,null
+6.boolean
+.....................................................................................
+		    Typescript data types has been built on js types
+
+
+eg:
+
+js:
+  let a=10
+  a="Hello"
+  a=true
+
+ts
+
+  let a:type = value
+ 
+
+TS has created strong data types based on the dynmaic types provided by js
+(strings,numbers(NaN,infinity),boolean,undefined,object(null),functions)
+
+java 
+int a =10;
+
+a="hello" ; it would be compile time error.
+
+TS offers data types into major classification:
+
+1.primtives data types 
+ strings,numbers(NaN,infinity),boolean,undefined 
+2.Reference data types
+ Objects,functions,Enums,Arrays
+3.Other types
+ void
+ any
+ unknown
+
+4.Custom Types
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,..............................................		
+
+       "Prmitive types are represented in smaller case - string,number,boolean"
+       "Object types are represented in TitleCase - Employee,Array,Promise"
+ 
+....................................................................................
+
+
+How to declare variable with strong typing?
+
+1.explicit type
+
+var/let/const variable:type = literal
+
+eg:
+ let a:string = "Hello"
+
+ a = 100; It is compile time error.
+
+//primitive types: Explicit type declaration
+
+//string
+let firstName: string = "Subramanian"
+console.log(`First Name ${firstName}`)
+//reinitalize with number
+firstName =100
+
+[3:10:30 pm] File change detected. Starting incremental compilation...
+
+src/index.ts:7:1 - error TS2322: Type 'number' is not assignable to type 'string'.
+
+7 firstName =100
+  ~~~~~~~~~
+
+[3:10:30 pm] Found 1 error. Watching for file changes.
+
+//primitive types: Explicit type declaration
+
+//string
+let firstName: string = "Subramanian"
+console.log(`First Name ${firstName}`)
+//reinitalize with number
+//firstName =100
+//numbers : 64 bit
+let salary: number = 100.89
+console.log(`Salary ${salary}`)
+
+//booleans
+let isValid:boolean = true
+console.log(`Valid ${isValid}`)
+
+
+2.implicit type / type inference
+
+//implicit : type inference
+//once the variable is delcared with some literal its type is considered as type automatically in future assigments.
+
+//a:number
+let a = 10
+console.log(`a is ${a}`)
+//a= "hello" type inference
+
+let firstName = "Subramanian"
+let isValid = true
+
+let b;
+b = 100
+
+let c:number
+
+				Typescript Compiler Behaviour
+
+
+By default Typescript compiler compiles the code even though there is compile time error.
+
+if you want to stop generating code, if there is compile time error.
+
+noEmitOnError:true
+
+tsconfig.json
+{
+    "compilerOptions": {
+        "outDir": "build",
+        "watch": true,
+        "target": "ES6",
+        "noEmitOnError": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "files": [
+        "src/index.ts"
+    ]
+}
+
+..............................................................................................
+				Type erasor
+.............................................................................................
+
+ Types will be erased after compilation; any ts specific notations will not be available after code is compiled.
+
+.............................................................................................
+
+			 undefined
+
+//undefined
+
+//implicit undefined
+let a;
+console.log(`a ${a}`)
+a = 10
+console.log(`a ${a}`)
+a = "Hello"
+console.log(a)
+
+//explicit type with undefined
+let b: number;
+console.log(`b ${b}`)
+b = 10
+console.log(`b ${b}`)
+// b="Hello"
+// console.log(`b ${b}`)
+
+//variables with undefined as value : implicit
+let c = undefined
+console.log(`c ${c}`)
+c = 10;
+console.log(`c ${c}`)
+c =true
+console.log(`c ${c}`)
+
+let d:undefined =undefined
+console.log(`d ${d}`)
+// d =10; //error
+..............................................................................................
+				 any
+
+Typescript as of now forces us to use   follow type rules, that means the variable is declared with number type , it should hold number only.
+
+What if i want loosly typed variables, i dont know in advance what is type of variable would be.
+
+any is good choice.
+
+noImplicitAny
+
+Recall that in some places, TypeScript doesn’t try to infer types for us and instead falls back to the most lenient type: any. This isn’t the worst thing that can happen - after all, falling back to any is just the plain JavaScript experience anyway.
+
+However, using any often defeats the purpose of using TypeScript in the first place. The more typed your program is, the more validation and tooling you’ll get, meaning you’ll run into fewer bugs as you code. Turning on the noImplicitAny flag will issue an error on any variables whose type is implicitly inferred as any.
+
+let myvar:any = "hello";
+console.log(myvar.toString())
+
+Note: this flag will be activated only inside function args , not as regular variable declaration.
+.....................................................................................
+
+
+Typescript compiler by default generates js code of "ES5 Version only"
+
+let/const ----> var
+
+``        -----> ""
+
+Typescript compiler can generate code of any version of javascript.
+
+tscode(es6) ----> es 6
+
+let --------------> let
+....................................................................................
+
+........
+				Object oriented Programming In TS
+............................................................................................
+
+class declaration
+  instance variables , methods
+  constructors and parameters
+  create instance
+ 
+
+class Customer {
+    //instance variables
+    id: number = 0
+    name: string = "default"
+    status: boolean = true
+
+    //constructor
+    constructor(){
+        console.log('constructor is called')
+    }
+
+    //instance methods
+    calculate(qty: number = 0, price?: number): number {
+        return qty * price
+    }
+}
+//create instance
+//customer is reference variable
+//new is memory allocation operator
+//Customer()  is constructor call
+let customer = new Customer();
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200,2000)}`)
+
+state initalization(instance variable init):
+
+1.direct -hardcoded
+2.after object creation
+3.during object creation - constructor parameters and args
+
+
+1.direct -hardcoded inside class directly
+
+class Customer {
+    //instance variables :hardcoded values
+    id: number = 0
+    name: string = "default"
+    status: boolean = true
+
+    //constructor
+    constructor(){
+        console.log('constructor is called')
+    }
+
+    //instance methods
+    calculate(qty: number = 0, price?: number): number {
+        return qty * price
+    }
+}
+//create instance
+//customer is reference variable
+//new is memory allocation operator
+//Customer()  is constructor call
+let customer = new Customer();
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200,2000)}`)
+..............................................................................................
+
+After object creation:
+
+class Customer {
+    //instance variables :hardcoded values
+    id: number = 0
+    name: string = "default"
+    status: boolean = true
+
+    //constructor
+    constructor() {
+        console.log('constructor is called')
+    }
+
+    //instance methods
+    calculate(qty: number = 0, price?: number): number {
+        return qty * price
+    }
+}
+let customer = new Customer();
+//init variables after object creation
+customer.id = 100;
+customer.name = 'subramanian'
+customer.status = true
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200, 2000)}`)
+..............................................................................................
+				Dependency injection: Constructor args
+..............................................................................................
+
+class Customer {
+    //instance variables 
+    id: number
+    name: string
+    status: boolean
+    //constructor args are called local variables
+    constructor(id: number = 0, name: string = "default", status: boolean = false) {
+        //this keyword is used to access instance variables
+        this.id = id;
+        this.name = name;
+        this.status = status
+    }
+
+    //instance methods
+    calculate(qty: number = 0, price?: number): number {
+        return qty * price
+    }
+}
+let customer = new Customer();
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200, 2000)}`)
+
+
+customer = new Customer(23, "Ram", true);
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200, 2000)}`)
+.............................................................................................
+.............................................................................................
+				 Encaspulation
+.............................................................................................
+Encapsulation:
+..............
+To Prevent code sharing from one code to another.
+
+code - collection of classes, variables,functions,......
+
+code is represented inside file.
+
+pl provides keywords to ensure that , how  we can allow the code to be shared
+
+TS provides keywords to prevent code sharing
+ 
+ -public - any where
+ -private - with in class 
+ -protected - with in class + inheritance
+
+Note:
+ keywords only can be applied for instance variables and methods only. not for class,interface,abstract class.
+
+
+public:
+ by default all variables and methods are public.
+
+class Customer {
+    //instance variables 
+    public id: number
+    public name: string
+    public status: boolean
+    //constructor args are called local variables
+    constructor(id: number = 0, name: string = "default", status: boolean = false) {
+        //this keyword is used to access instance variables
+        this.id = id;
+        this.name = name;
+        this.status = status
+    }
+
+    //instance methods
+    public calculate(qty: number = 0, price?: number): number {
+        return qty * price
+    }
+}
+let customer = new Customer();
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200, 2000)}`)
+
+
+customer = new Customer(23, "Ram", true);
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status} ${customer.calculate(200, 2000)}`)
+
+private:
+
+class Authentication {
+    private userName:string;
+    private password:string;
+
+    constructor(userName?:string,password?:string){
+        this.userName = userName
+        this.password = password
+    }
+
+    public getUserInfo():string{
+        return `${this.userName} ${this.password}`
+    }
+}
+let auth = new Authentication("admin","admin")
+/**
+ * src/index.ts:11:6 - error TS2341: Property 'userName' is private and only accessible within class 'Authentication'.
+
+11 auth.userName = 'admin'
+
+ */
+// auth.userName = 'admin'
+console.log(auth.getUserInfo())
+..............................................................................................
+
+				Variables Types
+
+
+1.instance variable
+  variable declared inside class
+2.static variables
+  variables delcared inside class with static modifier
+3.local variables
+  variables are declared inside method(including constructor)
+  or method args / constructor args
+
+
+
+1.instance variables:
+
+class Employee {
+ id:number; //instance variable
+}
+
+2.static variables
+
+class ErrorMessage {
+    static  SERVER_ERROR = 'Server error';
+    static INVALID_TOKEN = 'Token is invalid';
+    static TOKEN_NOTFOUND = 'Token Not suppllied';
+}
+
+
+
+//static variables
+class ErrorMessage {
+    static SERVER_ERROR = 'Server error';
+    static INVALID_TOKEN = 'Token is invalid';
+    static TOKEN_NOTFOUND = 'Token Not supplied';
+}
+
+//read static variables
+console.log(ErrorMessage.SERVER_ERROR)
+console.log(ErrorMessage.INVALID_TOKEN)
+console.log(ErrorMessage.TOKEN_NOTFOUND)
+
+
+3.local variables
+ variables are declared inside method(including constructor)
+  or method args / constructor args.
+
+ class Demo { 
+
+    doStuff(){
+      let a=10;//local variables
+    }
+    sayHai(name:string="hello" //localvariable){
+
+    }
+ }
+..............................................................................................
+			How to reduce declarations inside class
+
+
+
+// class Customer {
+//     //instance variables
+//     public id: number 
+//     public name: string 
+//     public status: boolean
+//     constructor(){
+//         console.log('constructor is called')
+//     }
+// }
+
+// class Customer {
+//     //instance variables
+//     public id: number
+//     public name: string
+//     public status: boolean
+//     constructor(id: number = 0, name: string = "", status: boolean = false) {
+//         this.id = id;
+//         this.name = name;
+//         this.status = status
+//     }
+// }
+
+class Customer {
+    //instance variables
+    // public id: number
+    // public name: string
+    // public status: boolean
+    //here id,name,status are local variables
+    //constructor arg local variables can be converted into instance variable; by adding public or private keywords
+    // constructor(public id: number = 0, public name: string = "",public status: boolean = false) {
+    //     this.id = id;  
+    //     this.name = name;
+    //     this.status = status
+    // }
+    constructor(public id: number = 0, public name: string = "", public status: boolean = false) { }
+}
+
+
+let customer = new Customer();
+console.log(`id: ${customer.id} name ${customer.name} status ${customer.status}`)
+
+
+class Order {
+    constructor(public id: number = 0, public value: number = 0) { }
+}
+let order = new Order(13,9000)
+console.log(`${order.id} ${order.value}`)
+.............................................................................................
+		   Hierachy: has-a(dependency injection), inheritance(is-a)
+
+
+//has -a 
+
+//service layer
+
+class OrderService {
+    constructor() {
+
+    }
+    public findAll() {
+        return "findAll Orders"
+    }
+}
+//controller
+// class OrderController {
+//     //has-a : dependency
+//     private orderservice: OrderService;
+//     constructor(orderService: OrderService) {
+//         this.orderservice = orderService
+//     }
+//     //instance method
+//     public init() {
+//         let orderinfo = this.orderservice.findAll()
+//         console.log(orderinfo)
+//     }
+// }
+
+class OrderController {
+    constructor(private orderService: OrderService) { }
+    //instance method
+    public init() {
+        let orderinfo = this.orderService.findAll()
+        console.log(orderinfo)
+    }
+}
+//main
+// let orderService = new OrderService()
+// let orderCtrl = new OrderController(orderService)
+let orderCtrl = new OrderController(new OrderService())
+orderCtrl.init()
+..............................................................................................
+			        inheritance
+.............................................................................................
+
+implementation:
+1.concrete class  - es 6 feature
+2.interfaces- only ts feature
+3.abstract class - ts feature only
+
+
+class inheritance:
+
+
+class Account {
+    constructor() {
+        console.log('account')
+    }
+}
+class SavingsAccount extends Account {
+    constructor() {
+        super()
+        console.log('Savings account')
+    }
+}
+
+let sb = new SavingsAccount()
+
+....
+protoected members and overriding:
+
+//class
+
+class Account {
+    protected id: number = 1000
+    constructor() {
+        console.log('account')
+    }
+    //method : overriding
+    protected deposit(): number {
+        return 100
+    }
+    // public deposit(): number {
+    //     return 100
+    // }
+}
+class SavingsAccount extends Account {
+    constructor() {
+        super()
+        console.log('Savings account', this.id)
+    }
+    //method redefining
+    public deposit(): number {
+        return 1000 * super.deposit()
+    }
+}
+
+let sb = new SavingsAccount()
+// console.log(sb.id)
+console.log(sb.deposit())
+.............................................................................................
+				 interfaces
+.............................................................................................
+
+1.interfaces are common classes
+2.having only declarations
+3.can act as super type
+4.we can have multiple implementations
+
+//interfaces
+
+interface Repository {
+    //only declaration
+    findAll(): string;
+    save(): string;
+}
+class OrderSQLRepository implements Repository {
+    findAll(): string {
+        return 'OrderSQLRepository findall'
+    }
+    save(): string {
+        return 'OrderSQLRepository save'
+    }
+}
+class OrderMongoRepository implements Repository {
+
+    findAll(): string {
+        return 'OrderMongoRepository findall'
+    }
+    save(): string {
+        return 'OrderMongoRepository save'
+    }
+
+}
+
+class OrderService {
+    constructor(private repo: Repository) { }
+
+    findAll(): void {
+        console.log(this.repo.findAll())
+    }
+    save(): void {
+        console.log(this.repo.save())
+    }
+}
+
+let service = new OrderService(new OrderSQLRepository())
+service.findAll();
+service.save()
+
+service = new OrderService(new OrderMongoRepository())
+service.findAll();
+service.save()
+
+interface Account {
+    deposit(amount: number): number
+}
+interface Calculator {
+    calculate(amount: number): number
+}
+
+class SavingsAccount implements Account, Calculator {
+    constructor() {
+    }
+    calculate(amount: number): number {
+        return amount * 10
+    }
+    //overriding
+    public deposit(): number {
+        return 1000;
+    }
+}
+let sb = new SavingsAccount()
+console.log(sb.deposit(),sb.calculate(111))
+..............................................................................................
+
+abstract class Account {
+    public getAccountInfo() {
+        return 'AccountInfo'
+    }
+    abstract deposit():number;
+    abstract withdraw():number;
+}
+class SavingsAccount extends Account {
+    constructor() {
+        super()
+    }
+    //overriding
+    public deposit():number {
+        return 1000
+    }
+    withdraw():number {
+        return 300;
+    }
+}
+let sb = new SavingsAccount()
+console.log(sb.deposit(),sb.withdraw(),sb.getAccountInfo())
+.............................................................................................
+				 Generics and arrays
+.............................................................................................
+
+What is generics?
+  To restict to have similar or same type of value inside container objects like array,Promise,Observable....
+
+Array:
+//array declaration
+
+let list = [1, 2, 3, 4, "hello", true]; //here we are mixing different type
+console.log(list)
+//how to restrict to have only numbers : Generics <number>
+
+//there are two syntax
+// way -1
+let numList: number[] = [1, 2, 3]
+console.log(numList)
+//way 2 : array of number
+let numList2: Array<number> = [1, 2, 3]
+
+//store list of customers
+
+class Customer {
+    id: number;
+    name: string;
+}
+let customerList: Array<Customer> = [
+    { id: 1, name: 'a' },
+    { id: 2, name: 'b' }
+];
+/////////////////////////////////////////////////////////////////////////////////////
+                         //custom generics
+..............................................................................................
+				 Generics
+.............................................................................................
+
+//array
+
+//here array can accept any type of value
+// let list = [1, 2, 3, "hello", true];
+
+//array should hold only numbers
+let list: Array<number> = [1, 2, 3];
+
+//custom generics: generic function 
+
+// function accept(item:string){
+//    console.log(item);
+// }
+//Generics Notation
+function accept<T>(item: T) {
+    console.log(item);
+}
+accept<string>("Hell0")
+// accept<string>(12)
+
+function getArray<T>(items: T[]): T[] {
+    return new Array<T>().concat(items);
+}
+
+let myNumArr = getArray<number>([100, 200, 300]);
+let myStrArr = getArray<string>(["Hello", "World"]);
+
+myNumArr.push(400); // OK
+myStrArr.push("Hello TypeScript"); // OK
+
+// myNumArr.push("Hi"); // Compiler Error
+// myStrArr.push(500); // Compiler Error
+//
+//multiple args
+
+function displayType<T, U>(id: T, name: U): void {
+    console.log(typeof (id) + ", " + typeof (name));
+}
+
+displayType<number, string>(1, "Steve"); // number, string
+
+///////////////////////////////////////////////////////////////////////////////////
+
+class Person {
+    firstName: string;
+    lastName: string;
+
+    constructor(fname:string,  lname:string) { 
+        this.firstName = fname;
+        this.lastName = lname;
+    }
+}
+
+//T can accept only type of Person only
+
+function display<T extends Person>(per: T): void {
+    console.log(`${ per.firstName} ${per.lastName}` );
+}
+var per = new Person("Bill", "Gates");
+display(per); //Output: Bill Gates
+
+// display("Bill Gates");//Compiler Error
+
+
+Builtin Generics classes in javascript:
+
+1.Array
+2.Promise
+/////////////////////////////////////////////////////////////////////////////////////////////
+                             Reference Types - Objects
+..............................................................................................
+//class as type
+class User {
+    id:number;
+    name:string;
+}
+
+let user:User = {
+    id: 1,
+    name: 'Subramanian'
+}
+
+
+
+//literal objects and types
+
+class Locator {
+    lat?: number
+    lng?: number
+}
+//class as type
+class User {
+    //optional and required : which are optional and which are mandatory
+    id: number;
+    name: string;
+    city?: string;
+    state?: string
+    status?: boolean;
+    location?: Locator
+}
+//here the compiler forces to verify the type of property and existence of property
+let user: User = {
+    id: 1,
+    name: 'Subramanian',
+    city: 'Coimbatore',
+    state: 'TN',
+    status: true
+}
+
+let newUser: User = {
+    id: 1,
+    name: 'Subramanian',
+    city: 'coimbatore',
+    location: {
+        lat: 19999,
+        lng: 89777
+    }
+}
+
+........
+interface as type:
+
+
+
+
+interface Locator {
+    lat?: number //optional properties
+    lng?: number
+}
+
+let userlocation: Locator = {
+    lat: 19999
+}
+
+let productLocation:Locator = {
+    lat: 19999
+}
+//class as a type
+interface Props {
+    id: number;
+    url: string;
+    className?: string;
+    target?: string;
+    varient?: "dark" | "light" 
+}
+let newProps: Props = {
+    id: 1,
+    url: 'http://wwww.example.com',
+    varient: "dark"
+}
+
+interface Person {
+    id: number;
+    name: string;
+    address: {
+        city: string
+        state?: string
+        country?: string
+    } | null,
+    status?: boolean
+    gender?: 'Male' | 'Female' | 'Thrid'
+}
+
+let customer: Person = {
+    id: 1,
+    name: 'Ram',
+    address: {
+        city: 'Coimbatore'
+    },
+    gender: 'Male'
+}
+......
+
+type keyword:
+
+type Person = {
+    id: number;
+    name: string;
+    address: {
+        city: string
+        state?: string
+        country?: string
+    } | null,
+    status?: boolean
+    gender?: 'Male' | 'Female' | 'Thrid'
+}
+let customer: Person = {
+    id: 1,
+    name: 'Ram',
+    address: {
+        city: 'Coimbatore'
+    },
+    gender: 'Male'
+}
+.............................................................................................
+				   Enum
+.............................................................................................
+
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+console.log(Direction.Up)
+console.log(Direction.Down)
+
+enum UserResponse {
+    No = 0,
+    Yes = 1,
+}
+function respond(recipient: string, message: UserResponse): void {
+    console.log(recipient, message)
+}
+
+respond("Princess Caroline", UserResponse.No);
+..............................................................................................
+
+annotations: @annotation , @Override,@Entity,@Controller
+
+-meta programming : isloate the code logic from main program to ouside, when you 
+req, you inject those features , into code during runtime.
+
+Decorators are experimental feature in es7. but ts added this language with experimental mode.
+
+What is decorator ?
+
+ It is simple javascript function.
+
+How to create our own decorators?
+
+Steps
+
+1.declare decorator function
+ It is regular javascript function with some syntax.
+2.Use decorator
+ @Decorator
+		 
+
+
+
+//custom decorators(Annotations)
+
+//steps : 1. write decorator
+function Course(target:any) {
+     //inject course information into target(on which object this decorator has been decorated)   
+     Object.defineProperty(target.prototype, "subject", { value: 'Angular' })
+}
+
+//steps : 2. How to decorate - on class,on method, on field
+
+@Course
+class Student {
+    constructor(public firstName: string = "", public lastName: string = "") { }
+}
+
+// in order to avoid that error 
+//two ways : 
+//1. define explicit type for student having properties
+
+interface StudentType {
+    firstName:string
+    lastName:string
+    subject:string
+}
+//2. you can skip the 
+
+// let student = new Student("Subramanian","Murugan") as StudentType
+
+let student = new Student("Subramanian","Murugan") as any
+
+
+console.log(`${student.firstName} ${student.lastName} is learning ${student.subject}`)
+.............................................................................................
+				Decorator with parameter -simple
+
+//steps : 1. write decorator
+
+function Course(subject: string) {
+    //inner function
+    return function (target: any) {
+        //inject course information into target(on which object this decorator has been decorated)   
+        Object.defineProperty(target.prototype, "subject", { value: subject})
+    }
+}
+
+//steps : 2. How to decorate - on class,on method, on field
+
+@Course("React")
+class Student {
+    constructor(public firstName: string = "", public lastName: string = "") { }
+}
+
+
+let student = new Student("Subramanian", "Murugan") as any
+
+
+console.log(`${student.firstName} ${student.lastName} is learning ${student.subject}`)
+............................................................................................
+			How to pass object as decorator parameter
+
+
+//steps : 1. write decorator
+
+type CourseType = {
+    courseId: number
+    name: string
+    duration?: string
+    trainer?: string
+}
+
+function Course(course: CourseType) {
+    return function (target: any) {
+        Object.defineProperty(target.prototype, "course", { value: course })
+    }
+}
+
+//steps : 2. How to decorate - on class,on method, on field
+
+@Course({ courseId: 1, name: 'Angular', duration: '40hrs', trainer: 'Subramanian' })
+class Student {
+    constructor(public firstName: string = "", public lastName: string = "") { }
+}
+
+
+let student = new Student("Subramanian", "Murugan") as any
+
+
+console.log(`${student.firstName} ${student.lastName} is learning ${student.course.courseId}- ${student.course.name} ${student.course.trainer}`)
+
+				Modules
+
+Javascript modularity:
+
+
+Modularity:
+..........
+
+In java Modularity , is presented via "Packages"
+
+Package organize the code  logically.
+
+Customer.java
+
+package com.ibm.cms
+
+public class Customer{}
+
+Java organizes code folders and files Physically.
+
+d:/javaapps/src/
+    com/ibm/cms/Customer.java
+
+
+What about javascript Modularity?
+
+ Javascript is file based modularity physically
+ but logically there is no such modularity at language level.
+
+collection of variable declarations and function.
+
+Once js started growing in large scale, dev struck to organize code.
+
+2000, Smart developers started thinking about how to modualrize js code.
+ 
+
+Module design patterns came.
+
+1.Namespace design pattern : 2000 : jquery
+2.AMD -Async Module Defintion : dojo
+---------------------------------------------------------
+3.CJS - Common JS =  namespace + amd
+4.ES 6 Module design pattern  = amd + cjs
+------------------------------------------------------------
+5.System = AMD = CJS + ES 6
+6.UMD = NAMESPACE + AMD + CJS = ES 6
+...........................................................................................
+		 Typescript and ES 6 Module design patterns
+
+
+
+How to share code?
+  export , export default
+How to link files
+ import
+
+export is used to share more code from the single file
+export default is used to share only one code from the single file
+
+code:
+ variables
+ functions
+ classes/interfaces/enums
+
+
+
+
+After running inside browser:
+
+Uncaught SyntaxError: Cannot use import statement outside a module
+
+Why this error?
+   The browser cant understand es 6 modules directly. 
+   The browser has no facility to load and link files nativly
+
+How to run this?
+  we need to use build tools, to pack our code into browser understandable format.
+
+
+build tools
+
+1.webpack
+
+How to install webpack in our project?
+
+Steps:
+
+1.make sure that you have package.json file
+ if not , create package.json file
+
+npm init
+
+2.install webpack
+  npm install webpack webpack-cli --save-dev
+
+3.add webpack.config.js in the project root dir
+
+const path = require('path');
+
+const path = require('path');
+
+module.exports = {
+  entry: './build/index.js',
+  mode:'development',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+};
+
+4.build /bundle your code
+ open package.json
+ add entry into scripts
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  }
+
+5.start bundling
+  open cmd and run the following command
+npm run build
+
+> es6-apps@1.0.0 build
+> webpack
+
+asset bundle.js 5.19 KiB [emitted] (name: main)
+runtime modules 670 bytes 3 modules
+cacheable modules 758 bytes
+  ./src/index.js 146 bytes [built] [code generated]
+  ./src/mylib.js 612 bytes [built] [code generated]
+webpack 5.70.0 compiled successfully in 113 ms
+
+6.add bundle file inside index.html
+     <script src="dist/bundle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
