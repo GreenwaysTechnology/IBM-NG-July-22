@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MyfirstApp</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root>
+	<app-header>
+		<app-menu>
+			
+		</app-menu>
+	</app-header>
+	<app-footer>
+
+	</app-footer>
+  </app-root>
+</body>
+</html>
+
+
+angular dev tool:
+
+To visualize the component tree in dev mode.
+
+
+<app-body>
+	<app-services>
+		<app-products></app-products>
+		<app-projects></app-projects>
+	</app-services>
+	<app-clients</app-clients>
+</app-body>
+
+
+
+
+
