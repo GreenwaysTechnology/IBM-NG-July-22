@@ -237,7 +237,7 @@ MS Started redesigning the whole project, target ecma 6 as base language.
 Arch of TS:
 
 					
-				      TS language
+				       TS language
 					    |
 					  ES 6
 					    |

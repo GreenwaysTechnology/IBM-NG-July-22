@@ -1,0 +1,453 @@
+				Angular
+.....................................................................................
+
+Web Apps:
+
+1.It is type of software , build for domain like banking,ecommerece etc... and distributed via internet.
+
+How to build web apps?
+
+1.static web - only html pages
+2.dynamic web
+   create html pages on demand using programs
+ java - jee-servlet jsp
+ microsoft-asp.net
+ php
+ node.js
+ python 
+ etc..
+3.webservices 
+   generate data and send to client apps
+  SOAP,RESTFul,GraphQL
+
+4.SPA - Single page web apps built at client side
+  Angular,React,Vue are SPA frameworks and libs
+............................................................................
+				Arch of modern apps
+
+
+
+1.client side
+  browser apps - spa
+  mobile apps
+			
+
+2.Server side 
+   traditional webservices
+   Microservices oriented
+....................................................................................
+				SPA Tech stack
+
+
+1.HTML 5
+2.CSS 3
+3.JS 
+
+Frameworks
+1.Angular
+2.Vue
+
+libs
+1.React
+...................................................................................
+				DOM
+...................................................................................
+
+HTML:
+What is HTML?
+
+How HTML is represented inside browser?
+
+What angular is doing with HTML?
+
+If you look at any web technology, either server side or client side.
+  HTML is common
+
+Server side technologies like JEE(Servlet),ASP.net,PHP , Create HTML Pages on fly -dynamic web page.
+
+Client side technologies like javascript , Processing rendered html(accessing html elements),
+javascript can be used to create "HTML pages on fly" like server side technologies.
+
+............................................................................................
+				Internals of HTML Representation
+..........................................................................................
+
+HTML is programming language -  DSL pl /declarative pl.
+
+index.html -source code
+
+<html>
+<head></head>
+<title><title>
+<body>
+  <div>
+     <h1>Welcome</h1>
+  </div>
+</body>
+</html>
+-------------------Browser
+loader---LOAD Code into browser
+ |
+   from file: or http:
+ |
+Parser : Parser is special compiler which converts source into lexcial tree(string tree)
+ |
+body
+  div
+     h1
+        Welcome 
+     h1
+  div
+body
+|
+ Complier-Compilation : Convert this into assembly
+|
+body -load xxx
+  div
+     h1
+        Welcome 
+     h1
+  div
+body
+..............................................................................................
+				Runtime  -  Allocate Memory for HTML
+...........................................................................................				
+HTML Execution engine : Request Os ,to allocate memory :Runtime
+
+-LinkedList - c
+
+body -Node
+  div -Node
+     h1 -Node
+        Welcome -Node
+     h1
+  div
+body
+
+-Nodes are connected each other in hierachical structure(tree)
+ 
+Linking the Nodes: Tree
+
+body  -Node
+  |
+  div -Node
+    |
+     h1 -Node
+      |
+        Welcome -Node
+        |
+     h1
+  div
+body
+ |
+ |
+Layout/Paint Engine: will convert nodes into pxs : final output
+.............................................................................................
+				 Birth of Java Script
+.............................................................................................
+
+..............................................................................................
+				Dynamic HTML - Inside Web Browser
+.............................................................................................
+
+Once the html has been rendered by the web browser, can we change the html(adding new element,updating existing element content,removing node,listing nodes).
+
+The company called Netscap communcation, the second web browser creator after line mode web browser.
+
+The NetsCap communication introduced the browser called netscap navigator , today firefox.
+
+The netscap introduced a new technology called how to change html after rendering.
+
+In 1996,Netscap communication,Started an RND project called "How to manipulate the tree"
+
+Tree is written in c language,then we need another c program to communicate.
+
+But NETSCAP decided not to use C pl.
+
+Netscap wanted to put java like implementation inside browser to manipulate "Tree".
+
+                        "The birth of Javascript"
+
+How to access nodes from javascript engine?
+  
+One spec was published ,As per that spec
+ "Document Object Model"
+    -How to represent document(elements/nodes) in object oriented way.->DOM
+
+ "Documents can be reprsented as Objects" : Object oriented Document Programming.
+..............................................................................................
+				Birth of Frameworks and libs
+
+
+
+............................................................................................
+How dom works?
+
+index.html           Broser runtime(C program)         Javascript Engine
+<h1>Hello</h1>       h1-Node                           h1- Object
+			Hello-Node			 Hello Object Property
+
+
+
+                 Every Html ELEMENT Inside Browser is "C Program"
+
+	       Every Html ELEMENT javascript engine is "Object"
+
+
+javascript developer ---->uses api --->to communicate Object---->js engine---->browser engine.	*******************************************************************************************	
+.............................................................................................
+				DOM Programming
+.............................................................................................
+
+How to implement dom programming?
+
+1.using plain js
+  if we use plain js , it is very difficult to build large applications
+
+2.using frameworks and libs
+
+2000 - The first javascript framework - DOJO
+2002-2005 - JQuery - is the second most powerfull dom lib.
+After 2006 - many js libs and frameworks introduced.. 2008(Angular js) 2013(react)...
+
+Popular DOM frameworks/lib:
+1.React
+2.Angular
+3.Vue.js
+...........................................................................................
+				HTML Elements
+............................................................................................
+
+Basic html elements
+
+div,h1,span,p.........
+
+
+HTML Elements types
+
+1.built in elements
+
+2.custom elements
+
+			
+1.built in elements
+  are part of html language spec
+ h1,body,p,nav,div
+
+Html compiler and elements
+
+<h1>Hello</h1>
+     |
+     compiler
+         |
+         Checks h1 is part of HTML language or not
+      |
+     Yes
+        --->It creates node accordingly --->It renders that node on screen Properly
+     |
+     No
+      ---->It throws exception called "NoSuchElement"--->UnKnownElement is converted into         plain Text Node , will be rendered as plain text or empty node
+  
+<demo>Hello</demo>
+  |
+     compiler
+         |
+         Checks h1 is part of HTML language or not
+      |
+     Yes
+        --->It creates node accordingly --->It renders that node on screen Properly
+     |
+     No
+      ---->It throws exception called "NoSuchElement"--->UnKnownElement is converted into         plain Text Node , will be rendered as plain text or empty node
+
+
+compiler design
+
+ source code
+                              compiler db -[div]
+                                 |
+  <div></div> ----- compile----compiler
+                                  |
+                      ------------------------
+                    if present             
+                      |
+                    execution
+                      |
+                     node
+                       |
+                     screen
+
+
+                                compiler db -[Subramanian]
+                                    |
+  <subramanian></subramaian> ----- compile----compiler
+                                  |
+                      ------------------------
+                    if present            if not present           
+                      |                        |
+                    execution              throw error - UnKnown Element
+                      |                                 |
+                     node                              Convert that element into PlanText   
+                       |                               |
+                     screen                           render
+
+
+
+2.IN 2007-2008 W3C Decided to introduce new html spec - html 5
+
+ -custom elements - how to add new elements
+ -custom attributes - how to add custom attribues on existing html specs
+
+Custom Types
+int,float =  class A{ int,float }
+
+how to teach browser to understand custom elements and attributes
+   -via Javascript
+
+   			compiler db -[Subramanian]
+                                    |
+ <subramanian></subramaian> ----- compile----compiler
+                                  |
+                      ------------------------
+                    if present            if not present           
+                      |                        |
+                    execution              feed into js 
+                      |                                 |
+                     node                              js will do something   
+                       |                               |
+                     screen                           render
+
+
+
+class AppDrawer extends HTMLElement {...}
+
+window.customElements.define('app-drawer', AppDrawer);
+
+// Or use an anonymous class if you don't want a named constructor in current scope.
+window.customElements.define('app-drawer', class extends HTMLElement {...});
+
+
+				<app-drawer></app-drawer>
+					 |
+                                        JS
+					 |
+                                Browser will render app-drawer			 
+					
+		
+Angular and Custom Elements:
+
+ Angular follows custom element spec in order to create apps.
+
+
+  Custom Element
+  <app-root></app-root>
+                  |
+                  ------------->|import { Component } from '@angular/core';
+
+				@Component({
+ 				 selector: 'app-root',
+  				templateUrl: './app.component.html',
+  				styleUrls: ['./app.component.css']
+				})
+				export class AppComponent {
+					  title = 'ng-helloworld';
+				}
+
+
+<app-root></app-root> ---------------function AppComponent(){ 
+                                           //dom code
+                                     }
+<app-drawer> ------attach js---------function Drawer(){ 
+					 drawerlogic - UI + BIZ Logic
+                                      }
+
+
+<app-drawer>--------attach js -------- class Drawer {
+
+                                        }
+
+<subramanian>                           
+
+<h1>Hello</h1> - attach c code - void h1(){}
+ h5 -small font
+
+<app-drawer> - attach js code - void
+......................................................................................
+ Angular is Custom element based MVC DOM framework, which is used to create SPA applications
+
+.............................................................................................
+		.......
+				  Angular Framework
+
+Angular framework has been organized as collection of many sub projects called modules like spring.
+
+Angular core projects / modules
+
+1.Angular cli
+2.Angular core
+3.Angular http
+4.Angular animation
+etc.....
+
+Angular Cli:
+
+This is project is used to 
+
+create angular apps
+manage angular work flows - dev,test,prod
+create angular artifacts like infra objects
+.............................................................................................
+					How to set up Angular cli
+
+Steps :
+install cli
+npm install -g @angular/cli
+
+verify cli has been installed or not
+
+>ng
+Available Commands:
+  add Adds support for an external library to your project.
+  analytics Configures the gathering of Angular CLI usage metrics. See https://angular.io/cli/usage-analytics-gathering.
+  build (b) Compiles an Angular app into an output directory named dist/ at the given output path. Must be executed from within a workspace directory.
+  deploy Invokes the deploy builder for a specified project or for the default project in the workspace.
+  config Retrieves or sets Angular configuration values in the angular.json file for the workspace.
+  doc (d) Opens the official Angular documentation (angular.io) in a browser, and searches for a given keyword.
+  e2e (e) Builds and serves an Angular app, then runs end-to-end tests.
+  extract-i18n (i18n-extract, xi18n) Extracts i18n messages from source code.
+  generate (g) Generates and/or modifies files based on a schematic.
+  help Lists available commands and their short descriptions.
+  lint (l) Runs linting tools on Angular app code in a given project folder.
+  new (n) Creates a new workspace and an initial Angular application.
+  run Runs an Architect target with an optional custom builder configuration defined in your project.
+  serve (s) Builds and serves your app, rebuilding on file changes.
+  test (t) Runs unit tests in a project.
+  update Updates your application and its dependencies. See https://update.angular.io/
+  version (v) Outputs Angular CLI version.
+
+For more detailed help run "ng [command name] --help"
+.............................................................................................
+
+How to create angular project?
+
+ng new my-first-project
+cd my-first-project
+ng serve
+.............................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
