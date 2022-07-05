@@ -1,0 +1,224 @@
+............................................................................................
+				 Modularity
+............................................................................................
+
+Every angular app must be modular?
+
+1.plan physical modularity
+
+src/app - root folder
+
+You have to create sub folder which represents domain /feature
+
+src/app
+ 
+layouts
+  headers
+  footers
+
+headers
+  header    
+  menubar
+  search
+  logo
+heroes
+   hero
+   hero-list
+   shared
+
+villains
+  villain
+  villain-list
+  shared
+
+shared
+ shared.module.ts
+ init-caps.pipe.ts|spec.ts
+ filter-text.component.ts|spec.ts
+ filter-text.service.ts|spec.ts
+
+app.component.html | ts | spec | css 
+
+
+Steps : 
+
+1.create folder
+ src/app/footer
+
+2.create files inside footer
+ footer.component.html
+ footer.component.ts
+
+3.write code inside footer.component.ts and html
+
+footer.component.ts
+import { Component } from "@angular/core";
+@Component({
+    selector:'app-footer',
+    templateUrl:'footer.component.html'
+})
+export class FooterComponent{}
+
+footer.component.html
+<div>
+    <h2>Footer</h2>
+</div>
+
+3.Refer component class inside app module
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FooterComponent } from "./footer/footer.component";
+
+@NgModule({
+  declarations: [AppComponent,FooterComponent],
+  imports: [BrowserModule],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+
+}
+
+4.refer selector inside app component.
+<div>
+  <app-header></app-header>
+  <app-footer></app-footer>
+</div>
+
+
+2.plan Logical  modularity
+
+=>For each domain, we must have logical modularity - sub module
+
+heroes
+   hero
+   hero-list
+   shared
+   heroes.module.ts
+
+All components related to that domain, must be injected into that submodule only, not inside
+main module.
+
+How to create submodule?
+
+Steps:
+1.declare class and decorate
+
+src/app/header/header.module.ts
+
+import { NgModule } from "@angular/core";
+import { HeaderComponent } from "./header.component";
+@NgModule({
+    declarations: [HeaderComponent],
+    imports: [],
+    providers: []
+})
+export class HeaderModule { }
+
+
+2.inject submodule into main module
+
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { AppComponent } from "./app.component";
+import { FooterComponent } from "./footer/footer.component";
+import { HeaderModule } from "./header/header.module";
+// import { HeaderComponent } from "./header/header.component";
+
+@NgModule({
+  // declarations: [AppComponent,HeaderComponent,FooterComponent],
+  declarations: [AppComponent, FooterComponent],
+  imports: [BrowserModule, HeaderModule],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+
+}
+
+After running you get error
+
+Error: src/app/app.component.html:2:3 - error NG8001: 'app-header' is not a known element:
+1. If 'app-header' is an Angular component, then verify that it is part of this module.
+2. If 'app-header' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+.............................................................................................
+				Module scope
+.............................................................................................
+	
+Any Components which are injected inside a module, which is available inside that module only.
+all components which belong to that module, only available to that module only.
+
+What if i want i access the component outside the module?
+
+ You have to make it public.
+
+How to make it?
+  using exports option
+
+import { NgModule } from "@angular/core";
+import { HeaderComponent } from "./header.component";
+@NgModule({
+    declarations: [HeaderComponent],
+    imports: [],
+    providers: [],
+    exports:[HeaderComponent] //share outside this module
+})
+export class HeaderModule { }
+
+..............................................................................................
+                       Angular CLI  - Automate && accelerate your work flow
+.............................................................................................
+
+Problems in the dev flow:
+
+Tasks:
+
+1.create folder
+2.create files - component-ts,html,css,spec
+3.create module
+4.declare class -cmp,service...
+5.refer the classes inside module
+6.you need to inject submodule into main module..
+
+DRY
+
+if you repeate the same thing for every object , which increases lot of time.
+
+Automation:
+ code generation automation
+
+angular cli tool to generate code.
+
+Generates and/or modifies files based on a schematic.
+
+ng generate <schematic> [options]
+ng g <schematic> [options]
+
+
+
+Task:
+1.create folder
+2.create submodule
+
+ng g m footer --module=app
+
+create folder called footer
+update/inject footer module inside app
+
+create component, inside footer folder, inject into footer module, make it available public
+i dont want css file,i want html file,i dontwant spec file
+
+ng g c footer/footer  --flat=true --export=true --inline-style=true --skip-tests=true   --module=footer
+
+ng g c footer/footer  --flat=true --export=true  --module=footer
+
+
+ --flat=true :  create any thing inside exsiting folder
+ --export=true : make it public
+ --inline-style=true : i dont want css file
+ --skip-tests=true  :dont create spec files
+ --module=footer  : inject inside footer module
+
+ng g m body --module=app   
+ng g c body/body  --flat=true --export=true --inline-style=true --skip-tests=true   --module=body
+..............................................................................................

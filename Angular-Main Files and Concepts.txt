@@ -451,3 +451,71 @@ import { HeaderComponent } from "./header.component";
 export class AppModule {
 
 }
+.....................................................................................
+.........
+			  Angular coding best pratices -Angular Style Guide
+..............................................................................................
+https://angular.io/guide/styleguide
+
+File structure conventions:
+
+->file must follow the domain model.
+
+product:
+ Ng has lot of infra objects (module,component,pipe,services...)
+
+component:
+ It has so many files
+ .ts file
+    component file
+    component spec file -  unit testing file
+ .html file
+ .css file
+
+header.component.ts | spec.ts | .html | .css
+
+header.component.ts
+header.component.html
+header.component.css
+header.component.spec.ts
+
+Modules
+ header.module.ts
+
+
+style guide for file names
+
+domainname.component|service|directive|pipe.ts
+hero.component.ts
+hero.service.ts
+hero.directive.ts
+hero.pipe.ts
+
+Custom elements Naming convention:Component selectors
+
+ <app-root> - recommended
+  
+ <approot>  - not recommended.
+
+Do use dashed-case or kebab-case for naming the element selectors of components.
+............................................................................................
+
+class Names:
+
+ 1.Noun
+ 2.should be meaningfull
+ 3.should have suffix component,service,directive,pipe
+
+ HeaderComponent
+ HeaderService
+ HeaderDirective
+ HeaderPipe
+..............................................................................................
+Steps to create Component
+
+1.declare componenent class
+2.declare component html 
+3.write component logic
+4.dependency injection inside moudle
+5.refer the compoent inside template.
+.....................................................................................
