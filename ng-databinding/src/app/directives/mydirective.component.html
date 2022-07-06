@@ -1,0 +1,51 @@
+<div>
+    <h1>Structural Directives</h1>
+    <h2>For loop</h2>
+    <ul>
+        <li *ngFor="let i of numList">
+            {{i}}
+        </li>
+    </ul>
+    <h2>If</h2>
+    <div *ngIf="isEnabled; else mycondition ">
+        <h1>You have facility</h1>
+    </div>
+    <!-- else -->
+    <ng-template #mycondition>
+        <h1>You dont have facility</h1>
+    </ng-template>
+    <h1>Progress Bar </h1>
+    <div *ngIf="loading; else notLoading  ">
+      <h2>{{status}}</h2>
+  </div>
+  <ng-template #notLoading>
+    <div *ngFor="let user of users">
+        <h3>{{user.id}}</h3>
+        <p>{{user.name}}</p>
+     </div>
+  </ng-template>
+  <h1>Switch case</h1>
+  <input [(ngModel)]="input">
+<button (click)="showFeedback()">Show Feedback</button>
+
+<div [ngSwitch]="feedback">
+    <p *ngSwitchCase="'good'">Good</p>
+    <p *ngSwitchCase="'verygood'">Very Good</p>
+    <p *ngSwitchCase="'bad'">Bad</p>
+    <p *ngSwitchDefault>Your input is not matching</p>
+</div>
+<div [ngSwitch]="feedback">
+    <ng-template [ngSwitchCase]="'good'">
+        <h3>Good</h3>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'verygood'">
+        <h3>Very Good</h3>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'bad'">
+        <h3>bad</h3>
+    </ng-template>
+    <ng-template ngSwitchDefault>
+        <h3>Your input is not matching</h3>
+    </ng-template>
+</div>
+</div>

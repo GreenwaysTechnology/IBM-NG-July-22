@@ -1,0 +1,367 @@
+
+
+
+					Directives
+..............................................................................................
+What is directive?
+  Directive is custom element / attribute..
+
+<app-root> ,<app-root [title]>
+
+
+Types of Directives:
+1.Template directive
+2.Structural directive
+3.Attribute directive
+
+1.Template directive
+   The directive with Template ; all components create template directive
+  <app-root> ----------------template directive
+  <app-profile>--------------template directive
+
+All component's meta data is inherited from Directive meta.
+Directive is parent , Component is child
+
+Every component is directive.
+
+
+
+2.Structural Directive
+   It is type of directive, used to change HTML Layouts.
+   They shape or reshape the DOM's "Structure" typically by adding,removing and manipulating
+   the host elements to which they attached.
+   
+  -Host element means html elements eg div,span,li,table.
+  -It is one of the "special attribute" directive
+  -All structural directive starts with "*" notation.
+
+*ngFor -  Structural Directive
+
+Built in structural directives
+
+1.*ngFor : for loop
+2.*ngIf  : if condition
+3.*ngSwitch : switch
+
+..............................................................................................			 BrowserModule vs CommonModule
+
+Where are structural directives?
+
+Structural directives are part of two modules
+
+1.BrowserModule
+   BrowserModule = {Structurals directives + Browser features + other common angular instructions}
+   BrowserModule should be injected only inside app module, we should not inject inside other submodules.
+
+2.CommonModule
+  CommonModule is extracted module from BrowserModule which contains Structural directives only.
+ Where ever in sub modules, you want to use structural directives ,CommonModule Must have been injected.
+
+
+
+List /Array rendering:
+......................
+
+Layouts:
+1.List view Layout
+   -ul li
+2.Card View Layout
+  div
+3.Grid View Layout
+  table tr td
+
+
+1.for Loop: *ngFor
+
+-where ever you want to repeate elements
+
+element could be dom element or custom elements
+
+eg:
+ <anyelement *ngFor="condition">
+
+ <div *ngFor="let variableName of arrayname">
+       {{VariableName.property}}
+ </div>
+ This code will create more div elements
+
+ <app-item-list *ngFor="">
+Static view:
+<ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+
+    </ul>
+
+<div>
+    <h1 style="text-align: center;">For loop</h1>
+
+    <!--ul element-->
+    <ul>
+        <li *ngFor="let i of numbers">{{i}}</li>
+    </ul>
+    <!--Ui element for tod-->
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let todo of todos">
+            <span class="badge badge-primary badge-pill"> {{todo.id}} </span> {{todo.title}}
+        </li>
+
+    </ul>
+    <div class="card" *ngFor="let todo of todos">
+        <h5 class="card-header">{{todo.id}}</h5>
+        <div class="card-body">
+            <h5 class="card-title">{{todo.userId}}</h5>
+            <p class="card-text">{{todo.title}}</p>
+            <a href="#" class="btn btn-primary">Update</a>
+        </div>
+    </div>
+</div>
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+eg:
+<div>
+    <ul>
+        <li *ngFor="let course of courses">
+            {{course}}
+        </li>
+    </ul>
+</div>
+<h2>Users data</h2>
+<div>
+    <div *ngFor="let user of users">
+        <h3>{{user.username}}</h3>
+        <p>{{user.email}}</p>
+        <address>
+            <p>{{user.address.street}},{{user.address.city}}</p>
+        </address>
+    </div>
+</div>
+
+import { Component, OnInit } from '@angular/core';
+import { USERS } from '../mock-data/users';
+
+@Component({
+  selector: 'app-forloop',
+  templateUrl: './forloop.component.html',
+  styles: [
+  ]
+})
+export class ForloopComponent implements OnInit {
+
+  courses: Array<string> = ["javascript", "angular", "Microservices"]
+
+  users: Array<any> = USERS;
+
+
+
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+.............................................................................................
+				*ngIf
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-conditionalrendering',
+  template: `
+  <div *ngIf="isEnabled; else mycondition">
+    <h1>You have Facility!</h1>
+</div>
+<ng-template #mycondition>
+    <h1>Sorry! Facility is not available</h1>
+</ng-template>
+ 
+  <h1>Progress Bar </h1>
+  <div *ngIf="loading; else notLoading  ">
+    <h2>{{status}}</h2>
+</div>
+<ng-template #notLoading>
+    <div *ngFor="let user of users">
+        <h3>{{user.id}}</h3>
+        <p>{{user.name}}</p>
+     </div>
+</ng-template>
+  `,
+  styles: [
+  ]
+})
+export class ConditionalrenderingComponent implements OnInit {
+  isEnabled: boolean = true
+  //progress bar 
+  loading: boolean = true;
+  status: string = "loading....."
+  users: Array<any> = []
+
+  constructor() { }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.users = [
+        { id: 1, name: 'a1' },
+        { id: 2, name: 'a2' },
+        { id: 3, name: 'a3' },
+      ]
+      this.loading = !this.loading;
+    }, 10000)
+  }
+
+}
+..............................................................................................				ngSwitch
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-switchcase',
+  template: `
+    <input [(ngModel)]="input">
+<button (click)="showFeedback()">Show Feedback</button>
+
+<div [ngSwitch]="feedback">
+    <p *ngSwitchCase="'good'">Good</p>
+    <p *ngSwitchCase="'verygood'">Very Good</p>
+    <p *ngSwitchCase="'bad'">Bad</p>
+    <p *ngSwitchDefault>Your input is not matching</p>
+</div>
+
+<div [ngSwitch]="feedback">
+    <ng-template [ngSwitchCase]="'good'">
+        <h3>Good</h3>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'verygood'">
+        <h3>Very Good</h3>
+    </ng-template>
+    <ng-template [ngSwitchCase]="'bad'">
+        <h3>bad</h3>
+    </ng-template>
+    <ng-template ngSwitchDefault>
+        <h3>Your input is not matching</h3>
+    </ng-template>
+</div>
+  `,
+  styles: [
+  ]
+})
+export class SwitchcaseComponent implements OnInit {
+
+  input: string = ""
+  feedback: string = "good"
+  constructor() { }
+  showFeedback() {
+    this.feedback = this.input
+  }
+
+  ngOnInit(): void {
+  }
+
+}
+.............................................................................................
+				  Attribute Directives
+............................................................................................
+
+<div class="intro"></div>
+      |
+ attribute  - built in attribute
+
+<div foo="value"></div>
+      |
+ attribute  - custom attribute
+
+
+Custom attributes enchance existing dom elements behaviours
+
+
+
+How to access DOM object eg: Textbox,div etc...?
+
+1.inside component via event listener
+
+ onInput(evt: any) {
+    //read txtvalue
+    //console.log(evt.target.value)
+    this.value1 = evt.target.value
+  }
+
+2.inside component template
+  <input> -object
+ 
+   <div>
+      can i access input reference here?
+   <div>
+ Yes! you can , that is called as "template reference variable"
+
+ # -template reference variable syntax
+
+
+3.inside directive via raw javascript apis
+  
+
+
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+
+  constructor(private element: ElementRef) {
+    console.log('works')
+  }
+  //logic for custom attributes
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    this.highLight('blue')
+  }
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.highLight(null)
+  }
+  private highLight(color: any) {
+    this.element.nativeElement.style.backgroundColor = color
+  }
+
+}
+
+app.component.html
+  <div appHighlight>
+    <h2>Hello</h2>
+  </div>
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ListComponent } from './list.component';
+import { ConditionalrenderingComponent } from './conditionalrendering.component';
+import { SwitchcaseComponent } from './switchcase.component';
+import { FormsModule } from '@angular/forms';
+import { HighlightDirective } from './highlight.directive';
+
+
+
+@NgModule({
+  declarations: [
+      ListComponent,
+      ConditionalrenderingComponent,
+      SwitchcaseComponent,
+      HighlightDirective
+  ],
+  imports: [
+    CommonModule,FormsModule
+  ],
+  exports: [ListComponent,ConditionalrenderingComponent,SwitchcaseComponent,HighlightDirective]
+})
+export class MydirectivesModule { }
+
+
+ 
+
+
+
+
+
+

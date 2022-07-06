@@ -10,6 +10,7 @@ import { CustomeventsModule } from './customevents/customevents.module';
 import { TemplatereferenceModule } from './templatereference/templatereference.module';
 import { DynamiccssModule } from './dynamiccss/dynamiccss.module';
 import { PipesModule } from './pipes/pipes.module';
+import { DirectivesModule } from './directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PipesModule } from './pipes/pipes.module';
     CustomeventsModule,
     TemplatereferenceModule,
     DynamiccssModule,
-    PipesModule
+    PipesModule,
+    DirectivesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
