@@ -1,0 +1,98 @@
+			     Pipes
+.....................................................................................
+
+Builtin pipes:
+
+DatePipe: Formats a date value according to locale rules.
+
+UpperCasePipe: Transforms text to all upper case.
+
+LowerCasePipe: Transforms text to all lower case.
+
+CurrencyPipe: Transforms a number to a currency string, formatted according to locale rules.
+
+DecimalPipe: Transforms a number into a string with a decimal point, formatted according to locale rules.
+
+PercentPipe: Transforms a number to a percentage string, formatted according to locale rules.
+
+asyncPipe : to bind list of values async
+   - used to bind observables directly.
+<div>
+    <h1>Pipes</h1>
+    <h2>Date</h2>
+    <h3>Today : {{today | date}}</h3>
+    <h3>Today : {{today | date:'dd/MM/yyyy'}}</h3>
+    <h2>String</h2>
+    <h3>Name : {{name | uppercase}}</h3>
+    <h3>Name : {{name | titlecase}}</h3>
+    <h2>Currency</h2>
+    <h3>Stock Price {{price |currency}}</h3>
+    <h3>Stock Price {{price |currency:'INR'}}</h3>
+    <h2>Json</h2>
+    <h3>Json {{user | json}}</h3>
+    <h3>Custom Pipe </h3>
+    <p>{{stock | decimalfraction}}</p>
+    <p>{{stock | decimalfraction:2}}</p>
+
+</div>
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-pipe',
+  templateUrl: './pipe.component.html',
+  styles: [
+  ]
+})
+export class PipeComponent implements OnInit {
+
+  today: Date = new Date()
+  name: string = "subramanian"
+  price: number = 1000.770
+  stock: number = 900.7834
+
+  user = {
+    id: 1,
+    name: 'subramanian',
+    city: 'Coimbatore'
+  }
+
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'decimalfraction'
+})
+export class DecimalfractionPipe implements PipeTransform {
+
+  transform(value: number, numberofDigits: number = 1): string {
+    //pipe logic
+    console.log('pipe is working')
+    return  value.toFixed(numberofDigits)
+  }
+
+}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PipeComponent } from './pipe.component';
+import { DecimalfractionPipe } from './decimalfraction.pipe';
+
+
+@NgModule({
+  declarations: [
+      DecimalfractionPipe,PipeComponent
+  ],
+  imports: [
+    CommonModule
+  ],
+  exports: [
+      DecimalfractionPipe,PipeComponent
+  ]
+})
+export class PipesModule { }
+.....................................................................................

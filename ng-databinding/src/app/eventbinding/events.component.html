@@ -1,0 +1,27 @@
+<div>
+    <h1>Simple Event Binding</h1>
+    <button (click)="onClick()">Click</button>
+    <button (click)="onGet('Hello')">SendData</button>
+    <h1>Getting Input from User - Two way data binding</h1>
+    <div>
+        <h1>Using Listener</h1>
+        <h1>{{value1}}</h1>
+        <input (input)="onInput($event)" >
+    </div>
+    <div>
+        <h1>Without Event Listener</h1>
+        <h1>{{value2}}</h1>
+        <input (input)="value2=$event.target.value" >
+    </div>
+    <div>
+        <h1>Without Event Listener prop + event</h1>
+        <h1>{{value3}}</h1>
+        <input  [value]="value3" (input)="value3=$event.target.value" >
+    </div>
+
+    <div>
+        <h1>Without Event Listener prop + event -Banna in a Box Notation [()]</h1>
+        <h1>{{value4}}</h1>
+        <input [(ngModel)]="value4">
+    </div>
+</div>

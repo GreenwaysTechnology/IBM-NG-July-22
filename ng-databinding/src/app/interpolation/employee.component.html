@@ -1,0 +1,26 @@
+<h2>InterPolation</h2>
+<div>
+    <p>Id {{employee.id}}</p>
+    <p>name {{employee.name}}</p>
+    <p>salary {{employee.salary}}</p>
+    <p>status {{employee.status ? "Active" : "InActive"}}</p>
+    <p>City {{employee.address.city}}</p>
+    <p>Skills</p>
+    <!-- iterator: loop -->
+    <!-- Directive -->
+    <ul>
+        <li *ngFor="let edu of employee.education">
+            {{edu}}
+        </li>
+    </ul>
+    <p>Skills</p>
+    <div>
+        <div *ngFor="let exp of employee.experience">
+            <h2>Id : {{exp.id}}</h2>
+            <p>Years of experience: {{exp.noofYears}}</p>
+            <p>Client: {{exp.client}}</p>
+            <p>Location : {{exp.location ? exp.location : "Default City"}}</p>
+
+        </div>
+    </div>
+</div>

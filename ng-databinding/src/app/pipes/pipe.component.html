@@ -1,0 +1,18 @@
+<div>
+    <h1>Pipes</h1>
+    <h2>Date</h2>
+    <h3>Today : {{today | date}}</h3>
+    <h3>Today : {{today | date:'dd/MM/yyyy'}}</h3>
+    <h2>String</h2>
+    <h3>Name : {{name | uppercase}}</h3>
+    <h3>Name : {{name | titlecase}}</h3>
+    <h2>Currency</h2>
+    <h3>Stock Price {{price |currency}}</h3>
+    <h3>Stock Price {{price |currency:'INR'}}</h3>
+    <h2>Json</h2>
+    <h3>Json {{user | json}}</h3>
+    <h3>Custom Pipe </h3>
+    <p>{{stock | decimalfraction}}</p>
+    <p>{{stock | decimalfraction:2}}</p>
+
+</div>

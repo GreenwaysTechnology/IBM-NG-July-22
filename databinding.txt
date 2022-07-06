@@ -1,0 +1,700 @@
+				  Data Binding
+.....................................................................................
+
+Component : state +methods + template
+Data binding:
+ Transfering state to ui(view)
+
+Types of databinding
+
+1.interpolation
+2.property binding
+3.attribute binding
+4.event binding
+5.two way data binding
+6.class binding
+7.style binding
+
+1.interploation:
+import { Component, OnInit } from '@angular/core';
+import { Address } from '../types/address.type';
+import { Employee } from '../types/employee.type';
+import { Experience } from '../types/experience.type';
+
+
+
+@Component({
+  selector: 'app-employee',
+  templateUrl: './employee.component.html',
+  styles: [
+  ]
+})
+export class EmployeeComponent implements OnInit {
+
+  //state : instance variables //models
+  //   id: number = 1
+  //   name: string = "Subramanian"
+  //   salary: number = 1000
+  //   status: boolean = true
+  //   address: Address = {
+  //     city: 'Coimbatore'
+  //   }
+  //   //array
+  //   education: Array<string> = [
+  //     "10", "12", "UG", "PG"
+  //   ]
+  //   //expereince information
+  //   experience: Array<Experience> = [{
+  //     id: 1,
+  //     noofYears: 5,
+  //     client: 'IBM',
+  //     location: 'Bangalore'
+  //   },
+  //   {
+  //     id: 2,
+  //     noofYears: 3,
+  //     client: 'Sony',
+  //     location: 'Bangalore'
+  //   },
+  //   {
+  //     id: 3,
+  //     noofYears: 4,
+  //     client: 'IBS'
+  //   }
+  // ]
+
+  employee:Employee = {
+    id: 1,
+    name: 'Subramanian',
+    salary: 1000,
+    status: true,
+    address: {
+      city: 'Coimbatore'
+    },
+    education: [
+      "10", "12", "UG", "PG"
+    ],
+    experience: [{
+      id: 1,
+      noofYears: 5,
+      client: 'IBM',
+      location: 'Bangalore'
+    },
+    {
+      id: 2,
+      noofYears: 3,
+      client: 'Sony',
+      location: 'Bangalore'
+    },
+    {
+      id: 3,
+      noofYears: 4,
+      client: 'IBS'
+    }
+    ]
+  }
+
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { EmployeeComponent } from './employee.component';
+
+
+
+@NgModule({
+  declarations: [
+    EmployeeComponent
+  ],
+  imports: [
+    CommonModule
+  ],
+  exports: [
+    EmployeeComponent
+  ]
+})
+export class InterpolationModule { }
+
+<h2>InterPolation</h2>
+<div>
+    <p>Id {{employee.id}}</p>
+    <p>name {{employee.name}}</p>
+    <p>salary {{employee.salary}}</p>
+    <p>status {{employee.status ? "Active" : "InActive"}}</p>
+    <p>City {{employee.address.city}}</p>
+    <p>Skills</p>
+    <!-- iterator: loop -->
+    <!-- Directive -->
+    <ul>
+        <li *ngFor="let edu of employee.education">
+            {{edu}}
+        </li>
+    </ul>
+    <p>Skills</p>
+    <div>
+        <div *ngFor="let exp of employee.experience">
+            <h2>Id : {{exp.id}}</h2>
+            <p>Years of experience: {{exp.noofYears}}</p>
+            <p>Client: {{exp.client}}</p>
+            <p>Location : {{exp.location ? exp.location : "Default City"}}</p>
+
+        </div>
+    </div>
+</div>
+.................................................................................
+
+Property  and Attribute Binding:
+................................
+
+What is attribute?
+ property of dom elemement
+
+<img src="logo.png"/>
+      |
+   attribute
+
+<button disabled>Hello</button>
+          |
+       attribute
+
+Types of attributes;
+
+1.static attribute
+   the attribute value is hardcoded, cant be changed dynamically.
+2.dynamic attributes
+   the attribute value is interploated, can be changed dynamically.
+
+[] - notation is used to make attribute dynamic
+
+<img [src]="variable"/>
+
+variable is state which holds the image location.
+here we are interploating image src dynamically -  attribute binding.
+
+eg;
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-attributebinding',
+  templateUrl: './attributebinding.component.html',
+  styles: [
+  ]
+})
+export class AttributebindingComponent implements OnInit {
+
+  imageUrl: string = "favicon.ico"
+  status:boolean = true
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+
+<h1>Attribute Binding</h1>
+<h2>Static Attributes</h2>
+<div>
+    <img src="favicon.ico">
+    <button disabled>Show</button>
+</div>
+<h2>Dynamic Attributes</h2>
+<div>
+    <img [src]="imageUrl">
+    <button [disabled]="status">Show</button>
+</div>
+.....................................................................................
+				  Props Pattern
+..............................................................................................
+
+In Component driven architecture (Angular,React,Vue), follows some principles
+
+Parent Component and Child Component:
+....................................
+
+The Parent component is responsible for retriving data from the service layer
+The child component is reponsible for displaying data 
+
+We can pass data upto n of childrens
+Which is called "uni directional data flow model"
+Components can be communicated via props binding.
+
+How to pass data from the parent to child?
+
+[] - property notation
+
+<element [propertyName]="PropertyValue">
+
+code:
+Parent:
+<div>
+    <h2>Parent</h2>
+    <app-child 
+    [message]="'Hello! I am from Parent'" 
+    [name]="name"  
+    [address]="address"
+    [skills]="skills"
+    >
+
+</app-child>
+<app-child 
+    [message]="'Hai! I am from Parent'" 
+    [name]="name"  
+    [address]="address"
+    [skills]="skills"
+    >
+
+</app-child>
+<app-child 
+    [message]="'Greet! I am from Parent'" 
+    [name]="name"  
+    [address]="address"
+    [skills]="skills"
+    >
+
+</app-child>
+</div>
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  templateUrl: './parent.component.html',
+  styles: [
+  ]
+})
+export class ParentComponent implements OnInit {
+
+  //state
+  //primitive variable
+  name: string = "Subramanian"
+
+  //object
+  address = {
+    city: 'Coimbatore'
+  }
+  skills: Array<string> = ["javascript", "Angular", "Typescript"]
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+
+child:
+<div>
+    <h2>Child</h2>
+    <h3>Data Got From Parent</h3>
+    <p>{{message}}</p>
+    <p>{{name}}</p>
+    <p>{{address.city}}</p>
+    <app-skillschild [skills]="skills"></app-skillschild>
+   
+</div>
+import { Component, Input, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styles: [
+  ]
+})
+export class ChildComponent implements OnInit {
+
+  @Input()
+  message!: string
+  @Input()
+  name!: string;
+  @Input()
+  address!: any
+  @Input()
+  skills!: string[]
+
+
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+....
+sub child
+<ul>
+    <li *ngFor="let skill of skills">
+        {{skill}}
+    </li>
+</ul>
+import { Component, Input, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-skillschild',
+  templateUrl: './skillschild.component.html',
+  styles: [
+  ]
+})
+export class SkillschildComponent implements OnInit {
+
+  @Input()
+  skills!:Array<string>
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+.....................................................................................
+				  Event Binding
+..............................................................................................
+                                 How to enable user interactions?
+..............................................................................................
+
+How to implement event  handling?
+
+Plain js:
+
+<button onclick="listener()">Click</button>
+
+In Angular , event handling is done using a symbol called ()
+
+<button (NameoftheEvent)="listener()">Click</button>
+<button (click)="listener()">Click</button>
+..................................................................................
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-events',
+  templateUrl: './events.component.html',
+  styles: [
+  ]
+})
+export class EventsComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+  //methods : listerners
+  onClick() {
+    console.log('clicked')
+  }
+  onGet(message: any) {
+    console.log(message)
+  }
+
+}
+<div>
+    <h1>Simple Event Binding</h1>
+    <button (click)="onClick()">Click</button>
+    <button (click)="onGet('Hello')">SendData</button>
+
+</div>
+
+eg:
+<div>
+    <h1>Simple Event Binding</h1>
+    <button (click)="onClick()">Click</button>
+    <button (click)="onGet('Hello')">SendData</button>
+    <h1>Getting Input from User - Two way data binding</h1>
+    <div>
+        <h1>Using Listener</h1>
+        <h1>{{value1}}</h1>
+        <input (input)="onInput($event)" >
+    </div>
+    <div>
+        <h1>Without Event Listener</h1>
+        <h1>{{value2}}</h1>
+        <input (input)="value2=$event.target.value" >
+    </div>
+    <div>
+        <h1>Without Event Listener prop + event</h1>
+        <h1>{{value3}}</h1>
+        <input  [value]="value3" (input)="value3=$event.target.value" >
+    </div>
+
+    <div>
+        <h1>Without Event Listener prop + event -Banna in a Box Notation [()]</h1>
+        <h1>{{value4}}</h1>
+        <input [(ngModel)]="value4">
+    </div>
+</div>
+
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-events',
+  templateUrl: './events.component.html',
+  styles: [
+  ]
+})
+export class EventsComponent implements OnInit {
+
+  value1!:string
+
+  value2!:string
+
+  value3:string ="default"
+
+  value4:string="default2" 
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+  //methods : listerners
+  onClick() {
+    console.log('clicked')
+  }
+  onGet(message: any) {
+    console.log(message)
+  }
+  //onInput
+  onInput(evt: any) {
+    //read txtvalue
+    //console.log(evt.target.value)
+    this.value1 = evt.target.value
+  }
+
+}
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { EventsComponent } from './events.component';
+import { FormsModule } from '@angular/forms';
+
+
+
+@NgModule({
+  declarations: [
+    EventsComponent
+  ],
+  imports: [
+    CommonModule,FormsModule
+  ],
+  exports: [
+    EventsComponent
+  ]
+})
+export class EventbindingModule { }
+.....................................................................................
+		   Custom Events- Sharing data from child to Parent
+
+Component Communication:
+  Sharing data in components
+
+1.Parent to child - via props
+2.Child to Parent -  via custom events - event emitter pattern
+3.across components -  via services
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-myparent',
+  templateUrl: './myparent.component.html',
+  styles: [
+  ]
+})
+export class MyparentComponent implements OnInit {
+
+  message!: string;
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+  processClient(data: any) {
+    this.message = data
+  }
+}
+<div>
+    <h1>Custom Events- Parent Component</h1>
+    <h2>Data From Child {{message}}</h2>
+</div>
+<hr>
+<!-- Parent listens on child event -->
+<app-mychild (onRequest)="processClient($event)"></app-mychild>
+...............
+child
+
+<div>
+    <h1>Custom Events - Child Component</h1>
+    <button (click)="sendToParent()" >SendToParent</button>
+</div>
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-mychild',
+  templateUrl: './mychild.component.html',
+  styles: [
+  ]
+})
+export class MychildComponent implements OnInit {
+
+  //declare custom event
+  //onRequest is name of the event
+  @Output()
+  onRequest = new EventEmitter<string>()
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+  //listener
+  sendToParent() {
+    //alert('sending')
+    this.onRequest.emit('Hello,I am from the Child')
+  }
+
+}
+<div>
+    <h1>Custom Events - Child Component</h1>
+    <button (click)="sendToParent()" >SendToParent</button>
+</div>
+....................................................................................
+			Template Reference Variable
+.....................................................................................
+
+How to access DOM object eg: Textbox,div etc...?
+
+1.inside component via event listener
+
+ onInput(evt: any) {
+    //read txtvalue
+    //console.log(evt.target.value)
+    this.value1 = evt.target.value
+  }
+
+2.inside component template
+  <input> -object
+ 
+   <div>
+      can i access input reference here?
+   <div>
+ Yes! you can , that is called as "template reference variable"
+
+ # -template reference variable syntax
+
+<input #phone>
+ <div>
+    <h1>Template Reference</h1>
+    <input #phone>
+    <button (click)="callPhone(phone.value)">Template</button>
+</div>
+<div>
+    <h1>Forms and Template Reference</h1>
+ <form #myform="ngForm" (ngSubmit)="myform">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" ngModel required/>
+    <button type="submit">Submit</button>
+ </form>
+ <div [hidden]="!myform.form.valid">
+      <p>Form submitted</p>
+ </div>
+</div>
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-templatereference',
+  templateUrl: './templatereference.component.html',
+  styles: [
+  ]
+})
+export class TemplatereferenceComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+  callPhone(value: any) {
+    alert(value)
+  }
+
+}
+.....................................................................................
+ 			CSS - how to integrate in angular
+....................................................................................
+
+There are two ways to add css
+
+1.global css
+   style.css
+ third party frameworks - bootstrap
+
+
+2.component spefic styles
+  every component can have its own style
+
+@Component({
+   styles
+})
+
+How to install bootstrap in angular?
+
+npm install bootstrap
+
+angular.json
+  "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
+            ],
+
+
+Dynamic css:
+
+[cssclass]="boolean condition"
+
+<div>
+    <p [class.highlight]="highlight">This is highLight</p>
+    <button (click)="highLight()">Highlight</button>
+</div>
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-dynamiccss',
+  templateUrl: './dynamiccss.component.html',
+  styles: [
+  ]
+})
+export class DynamiccssComponent implements OnInit {
+
+  highlight: boolean = false
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  //high light
+  highLight() {
+    this.highlight = !this.highlight
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

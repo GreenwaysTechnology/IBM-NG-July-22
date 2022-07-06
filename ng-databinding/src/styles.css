@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: peru;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: aliceblue;
+}
+.header {
+    font-size: large;
+    text-align:center
+}
+.highlight {
+    background-color: blanchedalmond;
+}

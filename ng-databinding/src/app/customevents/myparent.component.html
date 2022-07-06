@@ -1,0 +1,7 @@
+<div>
+    <h1>Custom Events- Parent Component</h1>
+    <h2>Data From Child {{message}}</h2>
+</div>
+<hr>
+<!-- Parent listens on child event -->
+<app-mychild (onRequest)="processClient($event)"></app-mychild>
