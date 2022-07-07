@@ -320,4 +320,365 @@ export class TodoComponent implements OnInit, OnDestroy {
     </ng-template>
 </div>
 
+...................................................................................
+				Promises,async and await
+..................................................................................
+
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Todo } from '../types/todo.type';
+import { TodoService } from './todo.service';
+
+@Component({
+  selector: 'app-todo',
+  templateUrl: './todo.component.html',
+  styles: [
+  ]
+})
+export class TodoComponent implements OnInit, OnDestroy {
+
+  //place holder variable
+  todos: Array<Todo> = []
+
+  //spinner
+  loading: boolean = true;
+  status: string = "loading....."
+
+  constructor(private todoService: TodoService) { }
+
+  //init
+  async ngOnInit() {
+    //sync api call
+    //this.todos = this.todoService.getTodos()
+    //async api call using callbacks
+    // this.todoService.getTodosAsync((todos: Todo[]) => {
+    //   //after 10000 ms we get data here
+    //   this.todos = todos
+    //   this.loading = !this.loading;
+    // })
+    //async api call using Promises
+    // this.todoService.getTodosAsyncPromise().then((todos: Todo[]) => {
+    //      this.todos = todos
+    //      this.loading = !this.loading;
+    // }).catch(err => console.log(err))
+    //async api call using promise with async await
+
+    try {
+      const todos = await this.todoService.getTodosAsyncPromise()
+      this.todos = todos
+      this.loading = !this.loading
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+  }
+  //destroy
+  ngOnDestroy(): void {
+    console.log('Resource clean up method')
+  }
+
+
+}
+import { Injectable } from '@angular/core';
+import { TODOS } from '../mockdata/todos';
+import { Todo } from '../types/todo.type';
+/**
+ * Injector:
+ *    It is low level program whoes responsible for creating objects
+ * Injector receives information(what are classes), based on that information, injector will create instances(object)
+ * In general , we configure classes(component,directive,pipe,module class) inside modules via declarations,imports,providers.
+ * Injector receives information from the modules, then accordingly objects will be created
+ * 
+ * Types of injector
+ * 1.global injector called root injector
+ * 2.sub module injector 
+ * 3.component level injector
+ * 
+ */
+@Injectable({
+  providedIn: 'root' //you are telling that this service object should be created by root injector
+})
+export class TodoService {
+  constructor() { }
+
+  //sync - biz method
+  public getTodos(): Array<Todo> {
+    return TODOS;
+  }
+  //async version -using callback
+  public getTodosAsync(callback: Function) {
+    //async api
+    setTimeout(callback, 10000, TODOS)
+  }
+  //promises are used to replace callback based implmentation
+  //async version-using Promises
+  public getTodosAsyncPromise(): Promise<Array<Todo>> {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, 10000, TODOS)
+    })
+  }
+
+
+}
+....................................................................................
+ 			 Rxjs -Reactive Extension for Javascript
+.....................................................................................
+
+What is Reactive programming?
+An API for asynchronous programming with observable streams
+
+observable streams : Event Driven Programming
+
+What is Reactive Programming?
+
+An API for "asynchronous programming" with "observable streams"
+
+RX Programming = "Async Programming" + "Observable Stream"
+
+Async Programming solves the problem of concurrency with having minimum no of threads.
+
+Observable Stream solves the problem of data movement and processing.
+
+Rx programming solves "Data Processing in pipe lines in async manner".
+
+
+Data Processing can be done in two places
+
+1.In database,via SQL
+
+2.In side application, via apis
+
+for eg:
+
+i have list of employees.
+
+I want to sort employee based on highest salary to lowest salary.
+
+SQL Query.
+
+get all employees , store inside collection(List) sort the list based on highest salary to lowest salary
+
+Reactive programming focus is processing data inside application using "async api, using pipe line processing(stream)"
+
+Reactive Programming has been implemented with three major principles
+
+1.Observable Design Pattern -  Event Driven programming
+2.functional programming principles - enables declarative programming.
+3.iterator design pattern - push based iterator.
+.............................................................................................
+Core concepts:
+
+1.Publisher
+   Publisher is object who publishes the data
+
+2.Subscriber
+  Subscriber is object who listens for the data
+
+
+Publisher---publish data-----|-----|----|-------Subscriber
+                              stream
+                             |     |    |
+                         operator operator operator
+
+
+3.Operators
+   Operators are apis or methods or function which creates and process the stream.
+
+.......................................................................................
+How to begin with reactive programming?
+
+Reactive is programming is language independant, it can be used in any language , framework,server side,client side,mobile apps.
+
+Reactive Programming implementations:
+
+java :
+  rxjava
+  Project Reactor
+  mutiny
+javascript:
+  rxjs
+
+
+rxjs and angular:
+
+Angular framework has integrated rxjs for building reactive user interface apps.
+Angular has integrated async programming with rxjs for building advanced async programming.
+
+Angular has implemented rxjs at low level.
+
+1.HTTP programming/webservice calls/ajax 
+2.Inside routers
+3.Inside event handlers
+etc....
+.....................................................................................
+
+RXJS APIS:
+Observable: represents the idea of an invokable collection of future values or events.
+Observer: is a collection of callbacks that knows how to listen to values delivered by the Observable.
+Subscription: represents the execution of an Observable, is primarily useful for cancelling the execution.
+Operators: are pure functions that enable a functional programming style of dealing with collections with operations like map, filter, concat, reduce, etc.
+Subject: is equivalent to an EventEmitter, and the only way of multicasting a value or event to multiple Observers.
+Schedulers: are centralized dispatchers to control concurrency, allowing us to coordinate when computation happens on e.g. setTimeout or requestAnimationFrame or others.
+
+Observable is publisher object which publish/stream sequence of data
+
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GreeterstreamService {
+
+  constructor() { }
+
+  //publisher
+  public sayHello(): Observable<string> {
+    return new Observable(subscriber => {
+      //push data into stream
+      subscriber.next("Hello")
+      subscriber.next("Greet")
+      subscriber.next("welcome")
+      //simulate error
+      //subscriber.error('something went wrong')
+      subscriber.next("Hai")
+      subscriber.next("how are you")
+      subscriber.complete()// no more data
+    })
+  }
+
+}
+import { Component, OnInit } from '@angular/core';
+import { GreeterstreamService } from './greeterstream.service';
+
+@Component({
+  selector: 'app-greeterstream',
+  templateUrl: './greeterstream.component.html',
+  styles: [
+  ]
+})
+export class GreeterstreamComponent implements OnInit {
+
+  data:string[]=[]
+
+  constructor(private greeterService: GreeterstreamService) { }
+
+  ngOnInit(): void {
+    //subscribe
+    //  this.greeterService.sayHello().subscribe(data=>{},err=>{},()=>{})
+    this.greeterService.sayHello().subscribe({
+      next: (data) => {
+        console.log('next=>',data)
+       // this.data = data
+        this.data.push(data)
+      },
+      error: err => {
+        console.log(err)
+      },
+      complete: () => {
+         console.log('Stream is completed')
+      }
+    })
+  }
+
+}
+<h1>Streamed</h1>
+<h3>{{data}}</h3>
+
+....
+import { Component, OnInit } from '@angular/core';
+import { CollectionstreamService } from './collectionstream.service';
+
+@Component({
+  selector: 'app-collectionstream',
+  templateUrl: './collectionstream.component.html',
+  styles: [
+  ]
+})
+export class CollectionstreamComponent implements OnInit {
+
+  constructor(private cStreamService: CollectionstreamService) { }
+
+  ngOnInit(): void {
+    //stream 
+    this.cStreamService.getList().subscribe({
+      next: (data) => {
+        console.log('next=>', data)
+      },
+      error: err => {
+        console.log(err)
+      },
+      complete: () => {
+        console.log('Stream is completed')
+      }
+    })
+
+    this.cStreamService.getTodos().subscribe({
+      next: (data) => {
+        console.log('next=>', data)
+      },
+      error: err => {
+        console.log(err)
+      },
+      complete: () => {
+        console.log('Stream is completed')
+      }
+    })
+  }
+
+}
+import { Injectable } from '@angular/core';
+import { tick } from '@angular/core/testing';
+import { Title } from '@angular/platform-browser';
+import { from, Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { TODOS } from '../mockdata/todos';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CollectionstreamService {
+
+  constructor() { }
+
+  public getList(): Observable<number> {
+    //create stream, stream array items
+    let list = [10, 20, 40, 23, 11, 34, 33, 78, 100]
+    //stream processing : i want to stream only odd numbers to subscriber
+    return from(list).pipe(
+      filter(item => item % 2 !== 0)
+
+    )
+  }
+  public getTodos() {
+    return from(TODOS).pipe(
+      filter(todo => todo.completed),
+      filter(todo => todo.id % 2 === 0),
+      map(todo => ({
+        userId: todo.userId,
+        id: todo.id,
+        title: todo.title.toUpperCase(),
+        completed: todo.completed
+      }))
+
+    )
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

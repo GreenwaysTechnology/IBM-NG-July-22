@@ -26,8 +26,16 @@ export class TodoService {
   }
   //async version -using callback
   public getTodosAsync(callback: Function) {
-      //async api
-      setTimeout(callback,10000,TODOS)
+    //async api
+    setTimeout(callback, 10000, TODOS)
   }
+  //promises are used to replace callback based implmentation
+  //async version-using Promises
+  public getTodosAsyncPromise(): Promise<Array<Todo>> {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, 10000, TODOS)
+    })
+  }
+
 
 }

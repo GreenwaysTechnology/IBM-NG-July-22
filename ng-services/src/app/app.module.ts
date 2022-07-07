@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { TodoModule } from './todo/todo.module';
+import { RxstreamModule } from './rxstream/rxstream.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { TodoModule } from './todo/todo.module';
   ],
   imports: [
     BrowserModule,
-    TodoModule
+    TodoModule,
+    RxstreamModule
   ],
   providers: [],
   bootstrap: [AppComponent]
