@@ -1,0 +1,323 @@
+				MVC - Services
+.....................................................................................
+
+What is service?
+Service is object going to hold state and biz logic
+Service object must be injected into component
+Service object is created by angular.
+
+
+How to declare service class?
+
+@Injectable({
+ providedIn:'root'
+})
+export class TodoService{
+
+}
+
+@Injectable()
+export class TodoService{
+
+}
+providers:[TodoService]
+
+Inside component/inside another service
+
+class TodoComponent{
+  constructor(private todoService:TodoService){}
+}
+
+Steps:
+ng g s todo/todo --skip-tests=true --flat=true
+
+import { Injectable } from '@angular/core';
+
+/**
+ * Injector:
+ *    It is low level program whoes responsible for creating objects
+ * Injector receives information(what are classes), based on that information, injector will create instances(object)
+ * In general , we configure classes(component,directive,pipe,module class) inside modules via declarations,imports,providers.
+ * Injector receives information from the modules, then accordingly objects will be created
+ * 
+ * Types of injector
+ * 1.global injector called root injector
+ * 2.sub module injector 
+ * 3.component level injector
+ * 
+ */
+@Injectable({
+  providedIn: 'root' //you are telling that this service object should be created by root injector
+})
+export class TodoService {
+  constructor() { }
+}
+....................................................................................
+
+Simple work flow:
+
+src/app/todo/todo.service.ts
+
+
+import { Injectable } from '@angular/core';
+import { TODOS } from '../mockdata/todos';
+import { Todo } from '../types/todo.type';
+@Injectable({
+  providedIn: 'root' //you are telling that this service object should be created by root injector
+})
+export class TodoService {
+  constructor() { }
+
+  //biz method
+  public getTodos(): Array<Todo> {
+    return TODOS;
+  }
+
+}
+
+todo.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Todo } from '../types/todo.type';
+import { TodoService } from './todo.service';
+
+@Component({
+  selector: 'app-todo',
+  templateUrl: './todo.component.html',
+  styles: [
+  ]
+})
+export class TodoComponent implements OnInit {
+
+  //place holder variable
+  todos: Array<Todo> = []
+
+  constructor(private todoService: TodoService) {
+    this.todos = this.todoService.getTodos()
+  }
+
+  ngOnInit(): void {
+  }
+
+}
+<div>
+    <div *ngFor="let todo of todos">
+        <h1>Id {{todo.id}}</h1>
+        <h4>Title {{todo.title}}</h4>
+        <h5>Status {{todo.completed ? "Completed" : "Not Completed"}}</h5>
+    </div>
+</div>
+...................................................................................
+			Page and state Initalization Process
+...................................................................................
+
+There are two phases:
+
+1.inital render
+  when first time the page is loaded into browser
+2.re render
+ after client interaction with events like, clicking,touching
+
+State can be loaded in both phases.
+
+In the inital render where state should initalized
+
+1.inside constructor
+
+export class TodoComponent implements OnInit {
+  //place holder variable
+  todos: Array<Todo> = []
+
+  constructor(private todoService: TodoService) {
+      //state initalization
+      this.todos = this.todoService.getTodos()
+  }
+
+  ngOnInit(): void {
+  }
+
+}
+inside constructor is not recommended due to performance issuses, ng do not recommended inside constructor.
+
+Rather than , we should initalize inside a special method "ngOnInit"
+...................................................................................
+			  Angular Component Life cycle Methods
+
+Life cycle methods are special methods, are called by angular runtime based on state of app.
+
+There are two basic state:
+
+1.init
+     when component is rendered 
+init is implemented via "ngOnInit" method of OnInit interface.
+
+Objective of init;
+
+1.if you want to do some async tasks like data fetching from services
+  timers,websocket connections
+
+2.destroy
+    when component is removed/destroyed
+
+2.if you want to do any resource clean up task, like closing websocket connection
+  closing streams,closing timers....
+
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Todo } from '../types/todo.type';
+import { TodoService } from './todo.service';
+
+@Component({
+  selector: 'app-todo',
+  templateUrl: './todo.component.html',
+  styles: [
+  ]
+})
+export class TodoComponent implements OnInit, OnDestroy {
+
+  //place holder variable
+  todos: Array<Todo> = []
+
+  constructor(private todoService: TodoService) { }
+
+  //init
+  ngOnInit(): void {
+    this.todos = this.todoService.getTodos()
+  }
+  //destroy
+  ngOnDestroy(): void {
+    console.log('Resource clean up method')
+  }
+
+}
+...................................................................................
+				Async Services - Rxjs - API calling
+....................................................................................
+
+Types of services:
+
+1.sync service
+   The controller is blocked until data is available.
+2.async service
+   The controller can continue even though the data is not available at the momement.
+
+Async Service:
+ 1. Non blocking way to access data.
+
+How to implement async programming in js?
+
+Js supports async programming model by default at language level.
+
+Patterns:
+1.callback pattern
+   core pattern
+2.Promise Pattern 
+  Promise pattern is wrapper for callback pattern
+  callback pattern has some problem called callback hell.
+3.async await pattern
+
+Third party lib and arch
+
+4.Reactive Programming via rxjs
+
+Implementation:
+
+in order to implement async programming  we need two things
+
+1.high level async api
+	js provides lot of async apis
+
+ 1.timer api - delay some taks
+ 2.ajax api - for network calls
+ 3.websocket api - for network calls
+
+2.listener function/callback function
+   it is function gets called when data is available once in the process.
+ 
+Coding is pattern, we need to pass function as parameter to async api which is called
+callback function/listerner
+
+EG:
+import { Injectable } from '@angular/core';
+import { TODOS } from '../mockdata/todos';
+import { Todo } from '../types/todo.type';
+/**
+ * Injector:
+ *    It is low level program whoes responsible for creating objects
+ * Injector receives information(what are classes), based on that information, injector will create instances(object)
+ * In general , we configure classes(component,directive,pipe,module class) inside modules via declarations,imports,providers.
+ * Injector receives information from the modules, then accordingly objects will be created
+ * 
+ * Types of injector
+ * 1.global injector called root injector
+ * 2.sub module injector 
+ * 3.component level injector
+ * 
+ */
+@Injectable({
+  providedIn: 'root' //you are telling that this service object should be created by root injector
+})
+export class TodoService {
+  constructor() { }
+
+  //sync - biz method
+  public getTodos(): Array<Todo> {
+    return TODOS;
+  }
+  //async version -using callback
+  public getTodosAsync(callback: Function) {
+      //async api
+      setTimeout(callback,10000,TODOS)
+  }
+
+}
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Todo } from '../types/todo.type';
+import { TodoService } from './todo.service';
+
+@Component({
+  selector: 'app-todo',
+  templateUrl: './todo.component.html',
+  styles: [
+  ]
+})
+export class TodoComponent implements OnInit, OnDestroy {
+
+  //place holder variable
+  todos: Array<Todo> = []
+
+  //spinner
+  loading: boolean = true;
+  status: string = "loading....."
+
+  constructor(private todoService: TodoService) { }
+
+  //init
+  ngOnInit(): void {
+    //sync api call
+    //this.todos = this.todoService.getTodos()
+    this.todoService.getTodosAsync((todos: Todo[]) => {
+      //after 10000 ms we get data here
+      this.todos = todos
+      this.loading = !this.loading;
+    })
+  }
+  //destroy
+  ngOnDestroy(): void {
+    console.log('Resource clean up method')
+  }
+
+
+}
+<div>
+    <div *ngIf="loading; else notLoading  ">
+        <h2>{{status}}</h2>
+    </div>
+    <ng-template #notLoading>
+        <div *ngFor="let todo of todos">
+            <h1>Id {{todo.id}}</h1>
+            <h4>Title {{todo.title}}</h4>
+            <h5>Status {{todo.completed ? "Completed" : "Not Completed"}}</h5>
+        </div>
+    </ng-template>
+</div>
+
+
