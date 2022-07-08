@@ -252,7 +252,7 @@ Html compiler and elements
   |
      compiler
          |
-         Checks h1 is part of HTML language or not
+         Checks demo is part of HTML language or not
       |
      Yes
         --->It creates node accordingly --->It renders that node on screen Properly

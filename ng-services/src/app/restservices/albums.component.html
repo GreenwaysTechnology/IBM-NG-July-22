@@ -1,0 +1,12 @@
+<div>
+    <!-- <div *ngFor="let alubum of albums">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <!-- <div *ngFor="let alubum of albums | async">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <h1>Send Data to Server</h1>
+    <app-albumform (onAlbum)="save($event)"></app-albumform>
+    <hr>
+    <app-album-list [albums]="albums" ></app-album-list>
+</div>

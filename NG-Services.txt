@@ -664,9 +664,586 @@ export class CollectionstreamService {
     )
   }
 }
+....................................................................................
+			 Error Handling in Rxjs
+...................................................................................
+.............................................................................................
+				Error Handling
+.............................................................................................
+
+Error handling is most important in every programming.
+
+How to handle errors in rxjs?
+
+There are two ways
+
+1.using subscribe method error block
+
+subscribe(data=>{},err=>{},()=>{});
+
+1st arg : to capture data
+2nd arg : to capture error
+3nd arg : to capture completed
+
+
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ErrorHandlingService {
+
+  constructor() { }
+  //handling error inside subscribe method
+  public handleError__(): Observable<number> {
+    return of(1, 2, 3, 4, 5).pipe(
+      map(n => {
+        if (n === 4) {
+          throw 'four!'; //simulating error
+        }
+        return n;
+      })
+    )
+  }
+  public handleError(): Observable<number> {
+    return of(1, 2, 3, 4, 5).pipe(
+      map(n => {
+        if (n === 4) {
+          throw 'four!'; //simulating error
+        }
+        return n;
+      }),
+      catchError(err => {
+        return of(this.fallback());
+      })
+    )
+  }
+  private fallback() {
+    return 900;
+  }
+}
+import { Component, OnInit } from '@angular/core';
+import { ErrorHandlingService } from './error-handling.service';
+
+@Component({
+  selector: 'app-error-handling',
+  templateUrl: './error-handling.component.html',
+  styles: [
+  ]
+})
+export class ErrorHandlingComponent implements OnInit {
+
+  stream$: Array<number> = []
+  constructor(private errorHandler: ErrorHandlingService) { }
+
+  ngOnInit(): void {
+    this.errorHandler.handleError().subscribe(data => {
+      console.log("Success : ",data)
+    }, err => {
+      console.log('error :',err)
+    }, () => {
+      console.log('completed')
+    })
+  }
+
+}
+<div>
+  <h1>Reactive Programming Using Angular</h1>
+  <!-- <app-greeter-stream></app-greeter-stream>
+  <app-number-stream></app-number-stream>
+  <app-array-stream></app-array-stream>
+  <app-data-processing-stream></app-data-processing-stream> -->
+
+  <app-error-handling></app-error-handling>
+</div>
+..............................................................................................
+				 Resilience Operators
+
+
+1.fail fast
+	if api hits error , immediatly you throw an error, catch it or fallback it.
+2.retry
+  if api hits error , dont throw an error immediately,rather give some time recovery.
+
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, catchError, retry } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ErrorHandlingService {
+
+  constructor() { }
+  //handling error inside subscribe method
+  public handleError__(): Observable<number> {
+    return of(1, 2, 3, 4, 5).pipe(
+      map(n => {
+        if (n === 4) {
+          throw 'four!'; //simulating error
+        }
+        return n;
+      })
+    )
+  }
+  public handleError(): Observable<number> {
+    return of(1, 2, 3, 4, 5).pipe(
+      map(n => {
+        if (n === 4) {
+          console.log('hitting');
+          throw 'four!'; //simulating error
+        }
+        return n;
+      }),
+      retry(3),
+      catchError(err => {
+        return of(this.fallback());
+      })
+    )
+  }
+  private fallback() {
+    return 900;
+  }
+}
+....................................................................................
+			  Rxjs implementation in Angular
+....................................................................................
+
+Angular implements rxjs for advanced async programming.
+
+Places:
+1.Web service calls where rxjs apis are used
+2.Routers where rxjs apis are used
+3.Reactive forms where rxjs apis are used
+4.Component communication -child to Parent -via EventEmitter -rxjs api
+etc...
+
+in order to make http calls with rest api servers,js offers an object called "XMLHTTPRequest"
+
+But frameworks provide abstraction over XHR object.
+
+Angular provides XHR Abstraction - @angular/common/http
+
+Angular XHR is powered with Reactive -  XHR + REACTIVE - XHR +Streaming
+...................................................................................
+			  REST API interaction with Angular
+.....................................................................................
+
+Modules:
+@angular/common/http
+
+HttpClientModule
+
+Services:
+HttpClient
+  Object for making http calls
+You have inject into services in order to make rest api call.
+
+Steps:
+1.Inject HttpClientModule
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AlbumsComponent } from './albums.component';
+import { HttpClientModule } from '@angular/common/http'
 
 
 
+@NgModule({
+  declarations: [
+    AlbumsComponent
+  ],
+  imports: [
+    CommonModule, HttpClientModule
+  ],
+  exports: [
+    AlbumsComponent
+  ]
+})
+export class RestservicesModule { }
+
+
+2.Inject HttpClient
+
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Alubum } from '../types/album.type';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlbumsService {
+
+  url: string = 'https://jsonplaceholder.typicode.com'
+
+  constructor(private http: HttpClient) { }
+
+  public getAlbums(): Observable<Alubum[]> {
+    //we can make http call
+    return this.http.get<Alubum[]>(`${this.url}/albums`)
+  }
+
+}
+export class Alubum {
+    userId!: number
+    id!: number
+    title!: string
+}
+<div>
+    <!-- <div *ngFor="let alubum of albums">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <div *ngFor="let alubum of albums | async">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div>
+</div>
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Alubum } from '../types/album.type';
+import { AlbumsService } from './albums.service';
+
+@Component({
+  selector: 'app-albums',
+  templateUrl: './albums.component.html',
+  styles: [
+  ]
+})
+export class AlbumsComponent implements OnInit {
+
+  //albums: Alubum[] = []
+  albums!: Observable<Alubum[]>
+  constructor(private albumService: AlbumsService) { }
+
+  ngOnInit(): void {
+    //Getting data and bind with subscribe method
+    // this.albumService.getAlbums().subscribe({
+    //   next: (albums) => {
+    //     this.albums = albums
+    //   }
+    // })
+    //Getting data and without subscribe method
+    this.albums = this.albumService.getAlbums()
+
+  }
+
+}
+.....................................................................................
+			  Error Handling
+.....................................................................................
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, of } from 'rxjs';
+import { Alubum } from '../types/album.type';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlbumsService {
+
+  url: string = 'https://jsonplaceholder.typicode.com'
+
+  constructor(private http: HttpClient) { }
+
+  public getAlbums(): Observable<Alubum[]> {
+    //we can make http call
+    return this.http.get<Alubum[]>(`${this.url}/albums`).pipe(
+      catchError(this.handleError<Alubum[]>('getAlbums', []))
+    )
+
+  }
+  //error handling method
+  /**
+   * 
+   * @param operation -name of the operation that failed
+   * @param result  - optional vale to return as the observable result
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    //return observable
+    return (error: any): Observable<T> => {
+      console.error(error)
+      console.log(`${operation} failed : ${error.message}`)
+      return of(result as T)
+    }
+
+  }
+
+}
+...................................................................................
+			Resilence behaviour for http calls
+
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, of, retry } from 'rxjs';
+import { Alubum } from '../types/album.type';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlbumsService {
+
+  url: string = 'https://jsonplaceholder.typicode.com'
+
+  constructor(private http: HttpClient) { }
+
+  public getAlbums(): Observable<Alubum[]> {
+    //we can make http call
+    return this.http.get<Alubum[]>(`${this.url}/albums`).pipe(
+      //retry failed request
+      retry(3),
+      catchError(this.handleError<Alubum[]>('getAlbums', [{id:0,userId:0,title:'foo'}]))
+    )
+
+  }
+  //error handling method
+  /**
+   * 
+   * @param operation -name of the operation that failed
+   * @param result  - optional vale to return as the observable result
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    //return observable
+    return (error: any): Observable<T> => {
+      console.error(error)
+      console.log(`${operation} failed : ${error.message}`)
+      return of(result as T)
+    }
+
+  }
+
+}
+...................................................................................
+			 How to send to server
+
+POST,PUT,DELETE
+
+POST:
+.....................................................................................
+
+Use Case : Creating Child component holding Form logic , Parent Component listens for Form data, send to Service
+
+Child to Parent:
+................
+
+Child Component
+
+albumform.component.html
+<div>
+    <h1>Album Registraion</h1>
+    <!-- todo: remove once form is completed :only for dev -->
+    {{album | json}}
+    <!-- Form template -->
+    <form #albumForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" [(ngModel)]="album.id" name="id" class="form-control" id="id" #idError="ngModel"
+                required>
+        </div>
+        <!-- validation block -->
+        <div [hidden]="idError.valid || idError.pristine" class="alert alert-danger">
+            Id is Required
+        </div>
+
+        <div class="form-group">
+            <label for="userId">User Id</label>
+            <input type="text" [(ngModel)]="album.userId" name="userId" class="form-control" id="userId"
+                #userIdErr="ngModel" required>
+        </div>
+        <!-- validation block -->
+        <div [hidden]="userIdErr.valid || userIdErr.pristine" class="alert alert-danger">
+            userId is Required
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" [(ngModel)]="album.title" name="title" class="form-control" id="title"
+                #titleError="ngModel" required>
+        </div>
+        <!-- validation block -->
+        <div [hidden]="titleError.valid || titleError.pristine" class="alert alert-danger">
+            Title is Required
+        </div>
+        <button type="submit" [disabled]="!albumForm.form.valid" class="btn btn-success">Submit</button>
+    </form>
+</div>
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Alubum } from '../types/album.type';
+import { AlubumEntity } from './album.model';
+
+@Component({
+  selector: 'app-albumform',
+  templateUrl: './albumform.component.html',
+  styles: [
+  ]
+})
+export class AlbumformComponent implements OnInit {
+  album!: Alubum
+
+  //eventEmitter
+  @Output()
+  onAlbum = new EventEmitter<Alubum>()
+
+  constructor() {
+    this.album = new AlubumEntity(0, 0, 'Bar')
+  }
+
+  ngOnInit(): void {
+  }
+  public onSubmit() {
+    this.onAlbum.emit(this.album)
+  }
+
+}
+....................................................................................
+
+Parent Component:
+
+album.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Alubum } from '../types/album.type';
+import { AlbumsService } from './albums.service';
+
+@Component({
+  selector: 'app-albums',
+  templateUrl: './albums.component.html',
+  styles: [
+  ]
+})
+export class AlbumsComponent implements OnInit {
+
+  //albums: Alubum[] = []
+  albums!: Observable<Alubum[]>
+  constructor(private albumService: AlbumsService) { }
+
+  ngOnInit(): void {
+    //Getting data and bind with subscribe method
+    // this.albumService.getAlbums().subscribe({
+    //   next: (albums) => {
+    //     this.albums = albums
+    //   }
+    // })
+    //Getting data and without subscribe method
+    this.albums = this.albumService.getAlbums()
+
+  }
+  //save method
+  public save(album: Alubum) {
+    this.albumService.save(album).subscribe({
+      next: response => {
+        console.log(response, 'saved')
+      }
+
+    })
+  }
+
+}
+<div>
+    <!-- <div *ngFor="let alubum of albums">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <!-- <div *ngFor="let alubum of albums | async">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <h1>Send Data to Server</h1>
+    <app-albumform (onAlbum)="save($event)"></app-albumform>
+</div>
+..
+service:
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, of, retry } from 'rxjs';
+import { Alubum } from '../types/album.type';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlbumsService {
+
+  url: string = 'https://jsonplaceholder.typicode.com'
+
+  constructor(private http: HttpClient) { }
+
+  public getAlbums(): Observable<Alubum[]> {
+    //we can make http call
+    return this.http.get<Alubum[]>(`${this.url}/albums`).pipe(
+      //retry failed request
+      retry(3),
+      catchError(this.handleError<Alubum[]>('getAlbums', [{ id: 0, userId: 0, title: 'foo' }]))
+    )
+
+  }
+  public save(album: Alubum): Observable<Alubum> {
+    console.log(album)
+    const httpoptions = {
+
+    }
+    return this.http.post<Alubum>(`${this.url}/albums`, album).pipe(
+      catchError(this.handleError('saveAlbum', { id: 0, userId: 0, title: 'error' }))
+    )
+  }
+
+
+  //error handling method
+  /**
+   * 
+   * @param operation -name of the operation that failed
+   * @param result  - optional vale to return as the observable result
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    //return observable
+    return (error: any): Observable<T> => {
+      console.error(error)
+      console.log(`${operation} failed : ${error.message}`)
+      return of(result as T)
+    }
+
+  }
+
+}
+................................................................................
+			 Master- Details 
+.................................................................................
+
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Alubum } from '../types/album.type';
+
+@Component({
+  selector: 'app-album-list',
+  templateUrl: './album-list.component.html',
+  styles: [
+  ]
+})
+export class AlbumListComponent implements OnInit {
+  @Input()
+  albums!:Observable<Alubum[]>
+  constructor() { }
+
+  ngOnInit(): void {
+
+  }
+
+}
+<div *ngFor="let alubum of albums | async">
+    <span>{{alubum.id}} {{alubum.title}}</span>
+</div>
+....................
+
+Parent component
+<div>
+    <!-- <div *ngFor="let alubum of albums">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <!-- <div *ngFor="let alubum of albums | async">
+        <span>{{alubum.id}} {{alubum.title}}</span>
+    </div> -->
+    <h1>Send Data to Server</h1>
+    <app-albumform (onAlbum)="save($event)"></app-albumform>
+    <hr>
+    <app-album-list [albums]="albums" ></app-album-list>
+</div>
 
 
 

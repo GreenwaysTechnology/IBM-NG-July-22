@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { TodoModule } from './todo/todo.module';
 import { RxstreamModule } from './rxstream/rxstream.module';
+import { RestservicesModule } from './restservices/restservices.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { RxstreamModule } from './rxstream/rxstream.module';
   imports: [
     BrowserModule,
     TodoModule,
-    RxstreamModule
+    RxstreamModule,
+    RestservicesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

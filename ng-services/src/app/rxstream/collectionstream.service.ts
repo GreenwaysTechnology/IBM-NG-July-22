@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { tick } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
-import { from, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { concatAll, filter, flatMap, map } from 'rxjs/operators';
 import { TODOS } from '../mockdata/todos';
 
 @Injectable({
@@ -22,16 +22,24 @@ export class CollectionstreamService {
     )
   }
   public getTodos() {
-    return from(TODOS).pipe(
-      filter(todo => todo.completed),
-      filter(todo => todo.id % 2 === 0),
-      map(todo => ({
-        userId: todo.userId,
-        id: todo.id,
-        title: todo.title.toUpperCase(),
-        completed: todo.completed
-      }))
-
+    // return from(TODOS).pipe(
+    //   filter(todo => todo.completed),
+    //   filter(todo => todo.id % 2 === 0),
+    //   map(todo => ({
+    //     userId: todo.userId,
+    //     id: todo.id,
+    //     title: todo.title.toUpperCase(),
+    //     completed: todo.completed
+    //   }))
+    return of(TODOS).pipe(
+      concatAll(),
+      filter(item => {
+        return item.completed
+      })
+      
+     
     )
+
+
   }
 }
