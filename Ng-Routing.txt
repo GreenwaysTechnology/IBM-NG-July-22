@@ -1,0 +1,341 @@
+				Routing
+.....................................................................................
+
+Single Page Web apps:
+....................
+
+How to control navigation in the client?
+
+Routing
+
+Routing is a feature of HTML5 ,Javascript, angular has added abstraction on top of that. -via Routing Module.
+
+package name:
+@angular/router
+
+Routing Module object 
+
+1.RouterModule
+
+Router Service Objects
+1.ActivatedRoute
+2.Router
+
+Directives
+1.RouterLink
+2.RouterLinkActive
+3.RouterOutlet
+
+Types:
+1.Routes
+...................................................................................
+
+Routing Arch:
+
+
+There are two routers
+1.master routers
+	Main menu configuration
+2.module routers
+
+Steps:
+
+1.ng new ng-routing with routing module
+
+
+class RouterModule {
+  static forRoot(routes: Routes, config?: ExtraOptions): ModuleWithProviders<RouterModule>
+  static forChild(routes: Routes): ModuleWithProviders<RouterModule>
+}
+
+2.create necessary components
+
+E:\session\IBM\2022\july\ng-session\ng-routing>ng g m home --module=app
+CREATE src/app/home/home.module.ts (190 bytes)
+UPDATE src/app/app.module.ts (458 bytes)
+
+E:\session\IBM\2022\july\ng-session\ng-routing>ng g c home/home --flat=true --skip-tests=true --inline-style=true --module=home --export=true
+CREATE src/app/home/home.component.html (19 bytes)
+CREATE src/app/home/home.component.ts (245 bytes)
+UPDATE src/app/home/home.module.ts (297 bytes)
+
+E:\session\IBM\2022\july\ng-session\ng-routing>ng g m contact --module=app
+CREATE src/app/contact/contact.module.ts (193 bytes)
+UPDATE src/app/app.module.ts (535 bytes)
+
+E:\session\IBM\2022\july\ng-session\ng-routing>ng g c contact/contact --flat=true --skip-tests=true --inline-style=true --module=contact --export=true
+CREATE src/app/contact/contact.component.html (22 bytes)
+CREATE src/app/contact/contact.component.ts (254 bytes)
+UPDATE src/app/contact/contact.module.ts (312 bytes)
+
+
+3.Root Routing Configuration
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ContactComponent } from './contact/contact.component';
+import { HomeComponent } from './home/home.component';
+
+//Router Configuration : Menu Configuration
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'contact', component: ContactComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+app.component.html
+<div class="container">
+  <!-- Nav Bar -->
+  <nav>
+    <ul>
+      <li>
+        <a routerLink="/home">Home</a>
+      </li>
+      <li>
+        <a routerLink="/contact">Contact</a>
+      </li>
+    </ul>
+  </nav>
+  <hr>
+  <!-- Component display -->
+  <router-outlet></router-outlet>
+</div>
+...................................................................................
+		Page Not Found - if path does not match from the configuration
+....................................................................................
+ng g c pagenotfound --flat=true --skip-tests=true --inline-style=true --module=app --export=true
+CREATE src/app/pagenotfound.component.html (27 bytes)
+CREATE src/app/pagenotfound.component.ts (269 bytes)
+UPDATE src/app/app.module.ts (672 bytes)
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '**', component: PagenotfoundComponent }
+];
+...................................................................................
+			index Path- 
+As soon the app is loaded it points to index path.
+You can decide which component/page to be landing page
+
+const routes: Routes = [
+  //index path
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '**', component: PagenotfoundComponent }
+];
+
+output:
+http://localhost:4200
+..................................................................................
+			How to setup Redirections
+...................................................................................
+
+Redirections translate the inital relative URL('') to the default path ('/home').
+
+
+const routes: Routes = [
+  //index path Without redictions
+  // { path: '', component: HomeComponent },
+  //index path with redirection
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '**', component: PagenotfoundComponent }
+];
+
+In the output
+http://localhost:4200/home
+....................................................................................
+			Sub Modules and Routing
+...................................................................................
+
+albums
+ |
+ album.module.ts
+ album.routing.module.ts
+
+
+ng g m album --routing
+
+master routing:
+
+ /myalbums
+     /details/1
+		
+app.routing.moudule
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ContactComponent } from './contact/contact.component';
+import { HomeComponent } from './home/home.component';
+import { PagenotfoundComponent } from './pagenotfound.component';
+
+//Router Configuration : Menu Configuration
+const routes: Routes = [
+  //index path Without redictions
+  // { path: '', component: HomeComponent },
+  //index path with redirection
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  //Named Paths
+  { path: 'home', component: HomeComponent },
+  { path: 'contact', component: ContactComponent },
+
+  //connect sub module routing module
+  //http://localhost:4200/myablums/album
+  //http://localhost:4200/myablums/alumb-details/:id
+  { path: 'myablums', loadChildren: () => import("./album/album-routing.module").then(m => m.AlbumRoutingModule) },
+  //page Not Found
+  { path: '**', component: PagenotfoundComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+album.routing.module
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AlubumDetailsComponent } from './alubum-details-component.component';
+import { AlubumComponent } from './alubum.component';
+
+const routes: Routes = [
+  {
+    path: 'albums', component: AlubumComponent
+  },
+  { path: 'alumb-details/:id', component: AlubumDetailsComponent }
+
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class AlbumRoutingModule { }
+....
+
+import { Component, OnInit } from '@angular/core';
+import { AlbumsService } from './albums.service';
+import { Observable } from 'rxjs';
+import { Alubum } from '../types/album.type';
+
+@Component({
+  selector: 'app-alubum',
+  templateUrl: './alubum.component.html',
+  styles: [
+  ]
+})
+export class AlubumComponent implements OnInit {
+  albums!: Observable<Alubum[]>
+  constructor(private albumService: AlbumsService) { }
+
+  ngOnInit(): void {
+    this.albums=this.albumService.getAlbums()
+  }
+
+}
+<div *ngFor="let alubum of albums | async">
+    <a [routerLink]="['../alumb-details',alubum.id]">
+        <span>{{alubum.title}}</span>
+    </a> 
+</div>
+.......
+details
+<h1>{{params.id}} details</h1>
+<div *ngIf="album">
+    <p>{{album.title}}</p>
+</div>
+<button (click)="navigateTo()" class="btn btn-success">GoTo Albumn</button>
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Alubum } from '../types/album.type';
+import { AlbumsService } from './albums.service';
+
+@Component({
+  selector: 'app-alubum-details-component',
+  templateUrl: './alubum-details-component.component.html',
+  styles: [
+  ]
+})
+export class AlubumDetailsComponent implements OnInit {
+
+  params!: any
+  album!: Alubum
+  constructor(private router:Router,private routeInfo: ActivatedRoute, private albumService: AlbumsService) { }
+
+  ngOnInit(): void {
+    this.routeInfo.params.subscribe(params => {
+      //console.log(params)
+      this.params = params
+      //make api call
+      this.albumService.getAlbumsById(parseInt(this.params.id)).subscribe(alubum => {
+        console.log(alubum)
+        this.album = alubum
+      })
+
+    })
+
+  }
+  navigateTo(){
+    //programmtic navigation
+    this.router.navigate(['myablums/albums'])
+  }
+
+}
+....................................................................................
+				Interceptors
+....................................................................................
+
+Intercepting http requests and response....
+
+ng g interceptor album/albums --flat=true --skip-tests=true
+
+
+albumns.interceptors.ts
+
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class AlbumsInterceptor implements HttpInterceptor {
+
+  constructor() {}
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    console.log('intercepting')
+    console.log(request)
+    console.log(request.url)
+    console.log(request.headers)
+    return next.handle(request);
+  }
+}
+...............
+app.module.ts
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AlbumsInterceptor,
+      multi: true
+    }
+  ],
+
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+<h1>{{params.id}} details</h1>
+<div *ngIf="album">
+    <p>{{album.title}}</p>
+</div>
+<button (click)="navigateTo()" class="btn btn-success">GoTo Albumn</button>

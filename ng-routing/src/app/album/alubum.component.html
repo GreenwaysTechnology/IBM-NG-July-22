@@ -1,0 +1,5 @@
+<div *ngFor="let alubum of albums | async">
+    <a [routerLink]="['../alumb-details',alubum.id]">
+        <span>{{alubum.title}}</span>
+    </a> 
+</div>
